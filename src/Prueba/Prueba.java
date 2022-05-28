@@ -19,7 +19,7 @@ public class Prueba {
         // TODO code application logic here
         //mis modelos
        new MenuVentana();
-        
+ 
     }
 
 }
