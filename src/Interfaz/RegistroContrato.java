@@ -107,7 +107,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         btnCancelar = new javax.swing.JButton();
         btnReservar = new javax.swing.JButton();
         paneldepositos = new javax.swing.JScrollPane();
-        listadepositos = new javax.swing.JList<>();
+        listadepositos = new javax.swing.JList();
         subtitulos = new javax.swing.JPanel();
         labelEmpleados = new javax.swing.JLabel();
         labelClientes = new javax.swing.JLabel();
@@ -287,10 +287,10 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(panelAcciones);
         panelAcciones.setBounds(530, 470, 290, 90);
 
-        listadepositos.setModel(new javax.swing.AbstractListModel<String>() {
+        listadepositos.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+            public Object getElementAt(int i) { return strings[i]; }
         });
         paneldepositos.setViewportView(listadepositos);
 
@@ -384,7 +384,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JList listClientes;
     private javax.swing.JList<String> listEmleados;
-    private javax.swing.JList<String> listadepositos;
+    private javax.swing.JList listadepositos;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelCaracteristicas;
     private javax.swing.JScrollPane paneldepositos;

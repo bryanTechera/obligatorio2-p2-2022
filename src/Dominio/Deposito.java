@@ -10,7 +10,8 @@ package Dominio;
  */
 public class Deposito {
     
-    private static int id = 0;
+    private static int ultimoDeposito = 0;
+    private int id;
     private int tamaño;
     private boolean estante;
     private boolean refrigerado;
@@ -58,7 +59,8 @@ public class Deposito {
     
     public Deposito(int tamaño, boolean estante, boolean refrigerado) throws Exception {
         this.Validar(tamaño);
-        this.id += 1;
+        this.id = ultimoDeposito+ 1;
+        this.ultimoDeposito = id;
         this.tamaño = tamaño;
         this.estante = estante;
         this.refrigerado = refrigerado;
@@ -73,9 +75,31 @@ public class Deposito {
         }
     }
 
+    private String estadoEstantes () {
+        String estadoEstantes = "";
+        if (this.estante==true){
+            estadoEstantes = " Con Estantes ";
+        }
+        else{
+            estadoEstantes = " Sin Estantes ";
+        }
+        return estadoEstantes;
+    }
+    
+    private String estadoRefrigerado() {
+        String estadoRefrigerado = "";
+        if(this.refrigerado==true){ 
+            estadoRefrigerado = "Refrigerado";
+        }
+        else {
+            estadoRefrigerado = "No Refrigerado";
+        }
+        return estadoRefrigerado;
+    }
+    
     @Override
     public String toString() {
-        return "Deposito: " + "tama\u00f1o:" + tamaño + ", estante:" + estante + ", refrigerado:" + refrigerado + ", alquilado:" + alquilado;
+        return "Num: " + this.id + "( " + tamaño + " m2) " + estadoRefrigerado() + " " +  estadoEstantes();
     }
     
 }
