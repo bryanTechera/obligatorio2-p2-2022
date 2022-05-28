@@ -30,7 +30,7 @@ public class Sistema extends Observable {
     public void registrarDeposito(int dimension, boolean estantes, boolean refrigerado) throws Exception {
         Deposito deposito = new Deposito(dimension, estantes, refrigerado);
         this.getDepositos().put(deposito.getId(), deposito);
-        this.notifyObservadores(this.getDepositos().toString());
+        this.notifyObservadores(deposito.toString());
     }
 
     public void registrarEmpleado(String nombre, String cedula, String direccion, int anioIngreso, String telefono) throws Exception {

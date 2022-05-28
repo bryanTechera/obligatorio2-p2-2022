@@ -216,6 +216,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            System.out.println(ex);
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

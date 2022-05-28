@@ -9,11 +9,13 @@ import Dominio.Cliente;
 import Dominio.Deposito;
 import Dominio.Empleado;
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -52,22 +54,21 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     }
 
     private void cargarListas() {
+        //LISTA EMPLEADOS
         DefaultListModel modeloDeListaEmpl = new DefaultListModel();
         modeloDeListaEmpl.addAll(this.empleados.values());
-        this.listEmpleados.setModel(modeloDeListaEmpl);
-
+        this.listEmleados.setModel(modeloDeListaEmpl);
+        this.Empleados.repaint();
+        //LISTA CLIENTES
         DefaultListModel modeloDeListaClie = new DefaultListModel();
         modeloDeListaClie.addAll(this.clientes.values());
         this.listClientes.setModel(modeloDeListaClie);
-
+        //LISTA DEPOSITOS
         DefaultListModel modeloDeListaDepo = new DefaultListModel();
-        Integer[] depositosNum = this.depositos.keySet().toArray(Integer[]::new);
-        Arrays.sort(depositosNum);
-        for (int e = 0; e < depositosNum.length; e++) {
-            modeloDeListaDepo.add(e, this.depositos.get(depositosNum[e]));
-        }
-        this.listDepositos.setModel(modeloDeListaDepo);
-        repaint();
+        this.listadepositos.setCellRenderer(new RenderCeldasDepositos());
+        modeloDeListaDepo.addAll(this.depositos.values());
+        this.listadepositos.setModel(modeloDeListaDepo);
+
     }
 
     /**
@@ -83,10 +84,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         grupoRefrigeracion = new javax.swing.ButtonGroup();
         Clientes = new javax.swing.JScrollPane();
         listClientes = new javax.swing.JList();
-        lblDepositosDisp = new javax.swing.JLabel();
-        Empleados = new javax.swing.JScrollPane();
-        listEmpleados = new javax.swing.JList();
-        labelEmpleados = new javax.swing.JLabel();
         panelCaracteristicas = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -102,9 +99,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         checkRefrigeradoNo = new javax.swing.JCheckBox();
         checkRefrigeradoNoRel = new javax.swing.JCheckBox();
         checkEstantes = new javax.swing.JCheckBox();
-        Depositos = new javax.swing.JScrollPane();
-        listDepositos = new javax.swing.JList();
-        labelClientes = new javax.swing.JLabel();
         labelMensaje1 = new javax.swing.JLabel();
         labelMensaje2 = new javax.swing.JLabel();
         panelAcciones = new javax.swing.JPanel();
@@ -112,6 +106,15 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnReservar = new javax.swing.JButton();
+        paneldepositos = new javax.swing.JScrollPane();
+        listadepositos = new javax.swing.JList<>();
+        subtitulos = new javax.swing.JPanel();
+        labelEmpleados = new javax.swing.JLabel();
+        labelClientes = new javax.swing.JLabel();
+        lblDepositosDisp = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        Empleados = new javax.swing.JScrollPane();
+        listEmleados = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de contrato");
@@ -125,28 +128,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         Clientes.setViewportView(listClientes);
 
         getContentPane().add(Clientes);
-        Clientes.setBounds(230, 130, 110, 240);
-
-        lblDepositosDisp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDepositosDisp.setText("Depositos disponibles");
-        getContentPane().add(lblDepositosDisp);
-        lblDepositosDisp.setBounds(530, 100, 180, 30);
-
-        listEmpleados.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "empleado1", "empleado2", "empleado3", "empleado4" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        listEmpleados.setToolTipText("");
-        Empleados.setViewportView(listEmpleados);
-
-        getContentPane().add(Empleados);
-        Empleados.setBounds(80, 130, 110, 240);
-
-        labelEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelEmpleados.setText("Empleados");
-        getContentPane().add(labelEmpleados);
-        labelEmpleados.setBounds(90, 100, 120, 30);
+        Clientes.setBounds(300, 130, 270, 240);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setText("Caracteristicas del deposito");
@@ -187,7 +169,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         panelCaracteristicasLayout.setHorizontalGroup(
             panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCaracteristicasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addGroup(panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCaracteristicasLayout.createSequentialGroup()
                         .addGroup(panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,7 +199,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                         .addGap(63, 63, 63))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCaracteristicasLayout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(102, 102, 102))))
+                        .addGap(103, 103, 103))))
         );
         panelCaracteristicasLayout.setVerticalGroup(
             panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,26 +239,16 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                         .addComponent(checkRefrigeradoNo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(checkRefrigeradoNoRel)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         getContentPane().add(panelCaracteristicas);
-        panelCaracteristicas.setBounds(10, 380, 460, 170);
-
-        Depositos.setViewportView(listDepositos);
-
-        getContentPane().add(Depositos);
-        Depositos.setBounds(440, 130, 350, 240);
-
-        labelClientes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelClientes.setText("Clientes");
-        getContentPane().add(labelClientes);
-        labelClientes.setBounds(250, 100, 90, 30);
+        panelCaracteristicas.setBounds(20, 410, 460, 170);
 
         labelMensaje1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelMensaje1.setText("Seleccione un empleado, un cliente y las caracteristicas deseadas del deposito.");
         getContentPane().add(labelMensaje1);
-        labelMensaje1.setBounds(90, 20, 670, 30);
+        labelMensaje1.setBounds(80, 40, 670, 30);
 
         labelMensaje2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelMensaje2.setText("Luego seleccione los depositos que desea reservar.");
@@ -313,9 +285,43 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         panelAcciones.add(btnReservar);
 
         getContentPane().add(panelAcciones);
-        panelAcciones.setBounds(470, 430, 290, 90);
+        panelAcciones.setBounds(530, 470, 290, 90);
 
-        setSize(new java.awt.Dimension(835, 584));
+        listadepositos.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        paneldepositos.setViewportView(listadepositos);
+
+        getContentPane().add(paneldepositos);
+        paneldepositos.setBounds(570, 130, 270, 240);
+
+        subtitulos.setLayout(new java.awt.GridLayout(1, 3, 5, 0));
+
+        labelEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelEmpleados.setText("Empleados");
+        subtitulos.add(labelEmpleados);
+
+        labelClientes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelClientes.setText("Clientes");
+        subtitulos.add(labelClientes);
+
+        lblDepositosDisp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblDepositosDisp.setText("Depositos disponibles");
+        subtitulos.add(lblDepositosDisp);
+
+        getContentPane().add(subtitulos);
+        subtitulos.setBounds(30, 90, 810, 40);
+        getContentPane().add(jSeparator1);
+        jSeparator1.setBounds(30, 383, 810, 10);
+
+        Empleados.setViewportView(listEmleados);
+
+        getContentPane().add(Empleados);
+        Empleados.setBounds(30, 130, 270, 240);
+
+        setSize(new java.awt.Dimension(885, 613));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -351,7 +357,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane Clientes;
-    private javax.swing.JScrollPane Depositos;
     private javax.swing.JScrollPane Empleados;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
@@ -371,18 +376,35 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelClientes;
     private javax.swing.JLabel labelEmpleados;
     private javax.swing.JLabel labelMensaje1;
     private javax.swing.JLabel labelMensaje2;
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JList listClientes;
-    private javax.swing.JList listDepositos;
-    private javax.swing.JList listEmpleados;
+    private javax.swing.JList<String> listEmleados;
+    private javax.swing.JList<String> listadepositos;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelCaracteristicas;
+    private javax.swing.JScrollPane paneldepositos;
+    private javax.swing.JPanel subtitulos;
     private javax.swing.JTextField txtMax;
     private javax.swing.JTextField txtMin;
     // End of variables declaration//GEN-END:variables
 
+}
+
+class RenderCeldasDepositos extends DefaultListCellRenderer {
+
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        Component miCelda = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        if (index % 2 == 0) {
+            miCelda.setBackground(Color.yellow);
+        } else {
+            miCelda.setBackground(Color.white);
+        }
+        return miCelda;
+    }
 }

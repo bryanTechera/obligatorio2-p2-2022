@@ -40,7 +40,6 @@ public class RegistroDeposito extends javax.swing.JFrame {
         pnlConfiguraciones = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lblNumero = new javax.swing.JLabel();
-        txtNumDeposito = new javax.swing.JTextField();
         pnlLables = new javax.swing.JPanel();
         lblTamaño = new javax.swing.JLabel();
         lblEstantes = new javax.swing.JLabel();
@@ -67,17 +66,8 @@ public class RegistroDeposito extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 35, 5));
 
         lblNumero.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblNumero.setText("Número de deposito:");
+        lblNumero.setText("Registro nuevo deposito");
         jPanel3.add(lblNumero);
-
-        txtNumDeposito.setColumns(9);
-        txtNumDeposito.setText("0");
-        txtNumDeposito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNumDepositoActionPerformed(evt);
-            }
-        });
-        jPanel3.add(txtNumDeposito);
 
         pnlLables.setLayout(new java.awt.GridLayout(3, 1, 0, 25));
 
@@ -210,11 +200,6 @@ public class RegistroDeposito extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTamañoActionPerformed
 
-    private void txtNumDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumDepositoActionPerformed
-
-
-    }//GEN-LAST:event_txtNumDepositoActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRegistrar;
@@ -237,7 +222,6 @@ public class RegistroDeposito extends javax.swing.JFrame {
     private javax.swing.JRadioButton radio_noEstantes;
     private javax.swing.JRadioButton radio_noRefrigerado;
     private javax.swing.JRadioButton radio_refrigerado;
-    private javax.swing.JTextField txtNumDeposito;
     private javax.swing.JTextField txtTamaño;
     // End of variables declaration//GEN-END:variables
 }
