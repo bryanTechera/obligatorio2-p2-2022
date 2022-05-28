@@ -19,7 +19,7 @@ public class RegistroDeposito extends javax.swing.JFrame {
     private Sistema sistema;
 
     public RegistroDeposito(Sistema sistema) {
-        this.sistema=sistema;
+        this.sistema = sistema;
         initComponents();
     }
 
@@ -190,6 +190,9 @@ public class RegistroDeposito extends javax.swing.JFrame {
         try {
             this.sistema.registrarDeposito(dimension, estantes, refrigerado);
             JOptionPane.showMessageDialog(this, "deposito registrado", "Registro de deposito", JOptionPane.INFORMATION_MESSAGE);
+            txtTamaño.setText("0");
+            radio_noEstantes.setSelected(true);
+            radio_noRefrigerado.setSelected(true);
             this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

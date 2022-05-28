@@ -213,6 +213,10 @@ public class RegistroEmpleado extends javax.swing.JFrame {
         try {
             this.sistema.registrarEmpleado(nombre, cedula, direccion, anioIngreso, telefono);
             JOptionPane.showMessageDialog(this, "empleado registrado", "Registro de empleado", JOptionPane.INFORMATION_MESSAGE);
+            txtCedula.setText("");
+            txtDireccion.setText("");
+            txtTelefono.setText("");
+            txtNombre.setText("");
             this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);

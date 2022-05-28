@@ -170,6 +170,10 @@ public class RegistroCliente extends javax.swing.JFrame {
         try {
             this.sistema.registrarCliente(nombre, cedula, mail, telefono);
             JOptionPane.showMessageDialog(this, "cliente registrado", "Registro de cliente", JOptionPane.INFORMATION_MESSAGE);
+            txtNombre.setText("");
+            txtCedula.setText("");
+            txtMail.setText("");
+            txtTelefono.setText("");
             this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
