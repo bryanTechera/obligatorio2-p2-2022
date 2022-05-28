@@ -48,12 +48,7 @@
         <Component class="javax.swing.JList" name="listClientes">
           <Properties>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="cliente1"/>
-                <StringItem index="1" value="cliente2"/>
-                <StringItem index="2" value="cliente3"/>
-                <StringItem index="3" value="cliente4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>
@@ -95,7 +90,7 @@
                                       <Component id="checkEstantesNo" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
                                       <Component id="jLabel5" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
                                       <Component id="checkEstantesNoRel" min="-2" pref="99" max="-2" attributes="0"/>
-                                      <Component id="checkEstantes" min="-2" pref="85" max="-2" attributes="0"/>
+                                      <Component id="checkEstantesSi" min="-2" pref="85" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jLabel4" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
@@ -103,7 +98,7 @@
                           <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel8" pref="113" max="32767" attributes="0"/>
-                              <Component id="checkRefrigerado" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
+                              <Component id="checkRefrigeradoSi" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
                               <Component id="checkRefrigeradoNo" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
                               <Component id="checkRefrigeradoNoRel" alignment="0" max="32767" attributes="0"/>
                           </Group>
@@ -159,8 +154,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="checkRefrigerado" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="checkEstantes" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="checkRefrigeradoSi" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="checkEstantesSi" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="checkRefrigeradoNo" min="-2" max="-2" attributes="0"/>
@@ -203,6 +198,7 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="grupoEstantes"/>
             </Property>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="No relevante"/>
           </Properties>
         </Component>
@@ -225,6 +221,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtMin">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMinActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtMax">
         </Component>
@@ -236,7 +235,7 @@
             <Property name="text" type="java.lang.String" value="Refrigeraci&#xf3;n"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="checkRefrigerado">
+        <Component class="javax.swing.JCheckBox" name="checkRefrigeradoSi">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="grupoRefrigeracion"/>
@@ -257,10 +256,11 @@
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="grupoRefrigeracion"/>
             </Property>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="No relevante"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="checkEstantes">
+        <Component class="javax.swing.JCheckBox" name="checkEstantesSi">
           <Properties>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="grupoEstantes"/>
@@ -353,17 +353,11 @@
         <Component class="javax.swing.JList" name="listadepositos">
           <Properties>
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
           </AuxValues>
         </Component>
       </SubComponents>

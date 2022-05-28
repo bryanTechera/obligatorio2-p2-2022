@@ -13,8 +13,10 @@ import java.awt.Component;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -50,7 +52,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         } else if (opcion.equals("cliente")) {
             clientes = sistema.getClientes();
         }
-        cargarListas();
     }
 
     private void cargarListas() {
@@ -63,12 +64,41 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         DefaultListModel modeloDeListaClie = new DefaultListModel();
         modeloDeListaClie.addAll(this.clientes.values());
         this.listClientes.setModel(modeloDeListaClie);
+    }
+
+    private void cargarDepositos(int tamMinimo, int tamMaximo, boolean noRelevanteEstan, boolean noRelevanteRefri, boolean conEstan, boolean conRefri) {
+
+        Collection<Deposito> coleccionDeDepositos = this.depositos.values();
+        Iterator it = coleccionDeDepositos.iterator();
         //LISTA DEPOSITOS
         DefaultListModel modeloDeListaDepo = new DefaultListModel();
         this.listadepositos.setCellRenderer(new RenderCeldasDepositos());
-        modeloDeListaDepo.addAll(this.depositos.values());
-        this.listadepositos.setModel(modeloDeListaDepo);
+        while (it.hasNext()) {
+            boolean loAgrego = true;
+            Deposito miDep = (Deposito) it.next();
+            if (miDep.getTamaño() >= tamMinimo && miDep.getTamaño() <= tamMaximo) {
+                if (!noRelevanteEstan) {
+                    //ME PIDEN CON ESTANTES
+                    if (miDep.esEstante() != conEstan) {
+                        loAgrego = false;
+                    }
+                }
+                if (!noRelevanteRefri) {
+                    // ME PIDEN CON REFRIGERACION
+                    if (miDep.esRefrigerado() != conRefri) {
+                        loAgrego = false;
+                    }
+                }
+            } else {
+                loAgrego = false;
+            }
 
+            if (loAgrego) {
+                modeloDeListaDepo.addElement(miDep);
+            }
+
+        }
+        this.listadepositos.setModel(modeloDeListaDepo);
     }
 
     /**
@@ -95,10 +125,10 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         txtMin = new javax.swing.JTextField();
         txtMax = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        checkRefrigerado = new javax.swing.JCheckBox();
+        checkRefrigeradoSi = new javax.swing.JCheckBox();
         checkRefrigeradoNo = new javax.swing.JCheckBox();
         checkRefrigeradoNoRel = new javax.swing.JCheckBox();
-        checkEstantes = new javax.swing.JCheckBox();
+        checkEstantesSi = new javax.swing.JCheckBox();
         labelMensaje1 = new javax.swing.JLabel();
         labelMensaje2 = new javax.swing.JLabel();
         panelAcciones = new javax.swing.JPanel();
@@ -107,7 +137,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         btnCancelar = new javax.swing.JButton();
         btnReservar = new javax.swing.JButton();
         paneldepositos = new javax.swing.JScrollPane();
-        listadepositos = new javax.swing.JList<>();
+        listadepositos = new javax.swing.JList();
         subtitulos = new javax.swing.JPanel();
         labelEmpleados = new javax.swing.JLabel();
         labelClientes = new javax.swing.JLabel();
@@ -120,11 +150,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         setTitle("Registro de contrato");
         getContentPane().setLayout(null);
 
-        listClientes.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "cliente1", "cliente2", "cliente3", "cliente4" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         Clientes.setViewportView(listClientes);
 
         getContentPane().add(Clientes);
@@ -140,6 +165,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         checkEstantesNo.setText("No");
 
         grupoEstantes.add(checkEstantesNoRel);
+        checkEstantesNoRel.setSelected(true);
         checkEstantesNoRel.setText("No relevante");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -149,20 +175,27 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
         jLabel7.setText("Max.");
 
+        txtMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMinActionPerformed(evt);
+            }
+        });
+
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel8.setText("Refrigeración");
 
-        grupoRefrigeracion.add(checkRefrigerado);
-        checkRefrigerado.setText("Si");
+        grupoRefrigeracion.add(checkRefrigeradoSi);
+        checkRefrigeradoSi.setText("Si");
 
         grupoRefrigeracion.add(checkRefrigeradoNo);
         checkRefrigeradoNo.setText("No");
 
         grupoRefrigeracion.add(checkRefrigeradoNoRel);
+        checkRefrigeradoNoRel.setSelected(true);
         checkRefrigeradoNoRel.setText("No relevante");
 
-        grupoEstantes.add(checkEstantes);
-        checkEstantes.setText("Si");
+        grupoEstantes.add(checkEstantesSi);
+        checkEstantesSi.setText("Si");
 
         javax.swing.GroupLayout panelCaracteristicasLayout = new javax.swing.GroupLayout(panelCaracteristicas);
         panelCaracteristicas.setLayout(panelCaracteristicasLayout);
@@ -188,12 +221,12 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                                     .addComponent(checkEstantesNo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(checkEstantesNoRel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(checkEstantes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(checkEstantesSi, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(34, 34, 34)
                         .addGroup(panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(checkRefrigerado, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(checkRefrigeradoSi, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkRefrigeradoNo, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(checkRefrigeradoNoRel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(63, 63, 63))
@@ -233,8 +266,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                     .addGroup(panelCaracteristicasLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(panelCaracteristicasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(checkRefrigerado)
-                            .addComponent(checkEstantes))
+                            .addComponent(checkRefrigeradoSi)
+                            .addComponent(checkEstantesSi))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(checkRefrigeradoNo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -287,11 +320,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(panelAcciones);
         panelAcciones.setBounds(530, 470, 290, 90);
 
-        listadepositos.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         paneldepositos.setViewportView(listadepositos);
 
         getContentPane().add(paneldepositos);
@@ -339,20 +367,21 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-//        String resultado = "";
-//        String estantes = "";
-//        String refrigerado = "";
-//     //   lstDepDisp.setModel(depositos);
-//        if (checkEstantes.isSelected()) {
-//            estantes = "Tiene estantes";
-//        } else if (checkEstantesNo.isSelected()) {
-//            estantes = "No tiene estantes";
-//        }
-//
-//        resultado = listEmpleados.getSelectedValue() + " " + listClientes.getSelectedValue() + " " + estantes;
-//      //  depositos.addElement(resultado);
+        int tamMinimo = Integer.parseInt(this.txtMin.getText());
+        int tamMax = Integer.parseInt(this.txtMax.getText());
+        boolean noRelevanteEstan = this.checkEstantesNoRel.isSelected();
+        boolean noRelevanteRefri = this.checkRefrigeradoNoRel.isSelected();
+
+        boolean conEstan = this.checkEstantesSi.isSelected();
+        boolean conRefri = this.checkRefrigeradoSi.isSelected();
+
+        cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
 
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMinActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMinActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -362,12 +391,12 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnLimpiarCapmos;
     private javax.swing.JButton btnReservar;
-    private javax.swing.JCheckBox checkEstantes;
     private javax.swing.JCheckBox checkEstantesNo;
     private javax.swing.JCheckBox checkEstantesNoRel;
-    private javax.swing.JCheckBox checkRefrigerado;
+    private javax.swing.JCheckBox checkEstantesSi;
     private javax.swing.JCheckBox checkRefrigeradoNo;
     private javax.swing.JCheckBox checkRefrigeradoNoRel;
+    private javax.swing.JCheckBox checkRefrigeradoSi;
     private javax.swing.ButtonGroup grupoEstantes;
     private javax.swing.ButtonGroup grupoRefrigeracion;
     private javax.swing.JLabel jLabel3;
@@ -384,7 +413,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JList listClientes;
     private javax.swing.JList<String> listEmleados;
-    private javax.swing.JList<String> listadepositos;
+    private javax.swing.JList listadepositos;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelCaracteristicas;
     private javax.swing.JScrollPane paneldepositos;
@@ -400,10 +429,15 @@ class RenderCeldasDepositos extends DefaultListCellRenderer {
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component miCelda = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        if (index % 2 == 0) {
-            miCelda.setBackground(Color.yellow);
-        } else {
-            miCelda.setBackground(Color.white);
+        Deposito dep = (Deposito) value;
+        if (dep.esEstante() && dep.esRefrigerado()) {
+            miCelda.setBackground(Color.GREEN);
+        } else if (dep.esEstante() && !dep.esRefrigerado()) {
+            miCelda.setBackground(Color.ORANGE);
+        } else if (!dep.esEstante() && dep.esRefrigerado()) {
+            miCelda.setBackground(Color.YELLOW);
+        } else if (!dep.esEstante() && !dep.esRefrigerado()) {
+            miCelda.setBackground(Color.CYAN);
         }
         return miCelda;
     }
