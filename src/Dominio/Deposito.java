@@ -10,11 +10,12 @@ package Dominio;
  */
 public class Deposito {
     
-    private static int id = 0;
+    private static int ultimoDeposito = 0;
     private int tamaño;
     private boolean estante;
     private boolean refrigerado;
     private boolean alquilado;
+    private int id;
     
     public int getId() {
         return id;
@@ -58,7 +59,8 @@ public class Deposito {
     
     public Deposito(int tamaño, boolean estante, boolean refrigerado) throws Exception {
         this.Validar(tamaño);
-        this.id += 1;
+        this.id = ultimoDeposito+1;
+        ultimoDeposito = this.id;
         this.tamaño = tamaño;
         this.estante = estante;
         this.refrigerado = refrigerado;
@@ -75,7 +77,7 @@ public class Deposito {
 
     @Override
     public String toString() {
-        return "Deposito: " + "tama\u00f1o:" + tamaño + ", estante:" + estante + ", refrigerado:" + refrigerado + ", alquilado:" + alquilado;
+        return "Deposito: "+ id  + "tama\u00f1o:" + tamaño + ", estante:" + estante + ", refrigerado:" + refrigerado + ", alquilado:" + alquilado;
     }
     
 }

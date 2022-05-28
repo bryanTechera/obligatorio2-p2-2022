@@ -65,8 +65,6 @@ public class MenuVentana extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu principal");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Martin\\Desktop\\ORT\\Segundo semestre\\Programación II\\Obligatorio II\\SelfStorage-removebg-preview.png")); // NOI18N
-
         registrosMenu.setMnemonic('f');
         registrosMenu.setText("Registros");
 
@@ -158,7 +156,7 @@ public class MenuVentana extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jLabel1)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(505, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
