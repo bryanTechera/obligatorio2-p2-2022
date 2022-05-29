@@ -13,6 +13,7 @@ import java.awt.Component;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
@@ -21,6 +22,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 
 public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
@@ -28,7 +30,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private HashMap<String, Cliente> clientes;
     private HashMap<Integer, Deposito> depositos;
     private Sistema sistema;
-
+    
+    
     /**
      * Creates new form RegistroContrato
      */
@@ -67,16 +70,16 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     }
 
     private void cargarDepositos(int tamMinimo, int tamMaximo, boolean noRelevanteEstan, boolean noRelevanteRefri, boolean conEstan, boolean conRefri) {
-
+        
         Collection<Deposito> coleccionDeDepositos = this.depositos.values();
         Iterator it = coleccionDeDepositos.iterator();
         //LISTA DEPOSITOS
         DefaultListModel modeloDeListaDepo = new DefaultListModel();
-        this.listadepositos.setCellRenderer(new RenderCeldasDepositos());
+        this.listaDepositos.setCellRenderer(new RenderCeldasDepositos());
         while (it.hasNext()) {
             boolean loAgrego = true;
             Deposito miDep = (Deposito) it.next();
-            if (miDep.getTamaño() >= tamMinimo && miDep.getTamaño() <= tamMaximo) {
+            if (miDep.getTamaño() >= tamMinimo && miDep.getTamaño() <= tamMaximo && miDep.isAlquilado()==false) {
                 if (!noRelevanteEstan) {
                     //ME PIDEN CON ESTANTES
                     if (miDep.esEstante() != conEstan) {
@@ -98,7 +101,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
             }
 
         }
-        this.listadepositos.setModel(modeloDeListaDepo);
+        this.listaDepositos.setModel(modeloDeListaDepo);
+        
     }
 
     /**
@@ -137,7 +141,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         btnCancelar = new javax.swing.JButton();
         btnReservar = new javax.swing.JButton();
         paneldepositos = new javax.swing.JScrollPane();
-        listadepositos = new javax.swing.JList();
+        listaDepositos = new javax.swing.JList();
         subtitulos = new javax.swing.JPanel();
         labelEmpleados = new javax.swing.JLabel();
         labelClientes = new javax.swing.JLabel();
@@ -320,7 +324,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(panelAcciones);
         panelAcciones.setBounds(530, 470, 290, 90);
 
-        paneldepositos.setViewportView(listadepositos);
+        paneldepositos.setViewportView(listaDepositos);
 
         getContentPane().add(paneldepositos);
         paneldepositos.setBounds(570, 130, 270, 240);
@@ -361,7 +365,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
 
     }//GEN-LAST:event_btnLimpiarCapmosActionPerformed
-
+     
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -374,15 +378,19 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
         boolean conEstan = this.checkEstantesSi.isSelected();
         boolean conRefri = this.checkRefrigeradoSi.isSelected();
-
+//         seleccionMultiple();
         cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
-
+       
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMinActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtMinActionPerformed
 
+//    private void seleccionMultiple () {
+//        listaDepositos.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
+//       
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane Clientes;
@@ -413,7 +421,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JList listClientes;
     private javax.swing.JList<String> listEmleados;
-    private javax.swing.JList listadepositos;
+    private javax.swing.JList listaDepositos;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelCaracteristicas;
     private javax.swing.JScrollPane paneldepositos;
