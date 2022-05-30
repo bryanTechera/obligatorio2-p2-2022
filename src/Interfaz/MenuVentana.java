@@ -143,6 +143,11 @@ public class MenuVentana extends javax.swing.JFrame {
 
         itmReporte.setMnemonic('t');
         itmReporte.setText("Generar reporte de ocupación");
+        itmReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmReporteActionPerformed(evt);
+            }
+        });
         estadisticasMenu.add(itmReporte);
 
         menuBar.add(estadisticasMenu);
@@ -199,6 +204,10 @@ public class MenuVentana extends javax.swing.JFrame {
 
         this.ventanaBajaContratos.setVisible(true);
     }//GEN-LAST:event_itmConsultaBajaActionPerformed
+
+    private void itmReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmReporteActionPerformed
+        
+    }//GEN-LAST:event_itmReporteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu consultasMenu;

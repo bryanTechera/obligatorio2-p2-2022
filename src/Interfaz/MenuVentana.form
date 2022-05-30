@@ -99,6 +99,9 @@
                 <Property name="mnemonic" type="int" value="116"/>
                 <Property name="text" type="java.lang.String" value="Generar reporte de ocupaci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itmReporteActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

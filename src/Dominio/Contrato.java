@@ -57,4 +57,10 @@ public class Contrato {
         this.deposito = deposito;
     }
 
+    @Override
+    public String toString(){
+    return "Contrato nº: " + this.id + " Corresopndiente al deposito: " + deposito.getId() + " Registrador por: " + empleado.getNombre() 
+            + ". Cliente: " + cliente.getNombre();
+    }
+    
 }
