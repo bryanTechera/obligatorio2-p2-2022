@@ -60,7 +60,7 @@ public class Contrato {
     @Override
     public String toString(){
     return "Contrato nº: " + this.id + " Corresopndiente al deposito: " + deposito.getId() + " Registrador por: " + empleado.getNombre() 
-            + ". Cliente: " + cliente.getNombre();
+            + ". Cliente: " + cliente.getNombre() + " - C.I.: " + cliente.getCedula() ;
     }
     
 }
