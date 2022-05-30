@@ -319,6 +319,11 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         panelAcciones.add(btnCancelar);
 
         btnReservar.setText("Reservar");
+        btnReservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReservarActionPerformed(evt);
+            }
+        });
         panelAcciones.add(btnReservar);
 
         getContentPane().add(panelAcciones);
@@ -362,7 +367,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         txtMax.setText("");
         grupoEstantes.clearSelection();
         grupoRefrigeracion.clearSelection();
-
+        listEmleados.isSelectionEmpty();
 
     }//GEN-LAST:event_btnLimpiarCapmosActionPerformed
      
@@ -386,6 +391,10 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private void txtMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMinActionPerformed
         
     }//GEN-LAST:event_txtMinActionPerformed
+
+    private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReservarActionPerformed
 
 //    private void seleccionMultiple () {
 //        listaDepositos.setSelectionMode(MULTIPLE_INTERVAL_SELECTION);
