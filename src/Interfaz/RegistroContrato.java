@@ -22,6 +22,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 
 public class RegistroContrato extends javax.swing.JFrame implements Observer {
@@ -32,9 +33,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private Sistema sistema;
     
     
-    /**
-     * Creates new form RegistroContrato
-     */
+  
     public RegistroContrato(Sistema sistema) {
         this.sistema = sistema;
         this.empleados = sistema.getEmpleados();
@@ -55,6 +54,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         } else if (opcion.equals("cliente")) {
             clientes = sistema.getClientes();
         }
+        cargarListas();
     }
 
     private void cargarListas() {
@@ -365,9 +365,9 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private void btnLimpiarCapmosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCapmosActionPerformed
         txtMin.setText("");
         txtMax.setText("");
-        grupoEstantes.clearSelection();
-        grupoRefrigeracion.clearSelection();
-        listEmleados.isSelectionEmpty();
+        checkEstantesNoRel.setSelected(true);
+        checkRefrigeradoNoRel.setSelected(true);
+        
 
     }//GEN-LAST:event_btnLimpiarCapmosActionPerformed
      
@@ -376,6 +376,9 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        
+       
+        
         int tamMinimo = Integer.parseInt(this.txtMin.getText());
         int tamMax = Integer.parseInt(this.txtMax.getText());
         boolean noRelevanteEstan = this.checkEstantesNoRel.isSelected();
@@ -383,7 +386,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
         boolean conEstan = this.checkEstantesSi.isSelected();
         boolean conRefri = this.checkRefrigeradoSi.isSelected();
-//         seleccionMultiple();
+
         cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
        
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -458,4 +461,6 @@ class RenderCeldasDepositos extends DefaultListCellRenderer {
         }
         return miCelda;
     }
+    
+    
 }
