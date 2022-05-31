@@ -61,7 +61,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         //LISTA EMPLEADOS
         DefaultListModel modeloDeListaEmpl = new DefaultListModel();
         modeloDeListaEmpl.addAll(this.empleados.values());
-        this.listEmleados.setModel(modeloDeListaEmpl);
+        this.listEmpleados.setModel(modeloDeListaEmpl);
         this.Empleados.repaint();
         //LISTA CLIENTES
         DefaultListModel modeloDeListaClie = new DefaultListModel();
@@ -104,6 +104,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         this.listaDepositos.setModel(modeloDeListaDepo);
         
     }
+    
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -148,7 +150,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         lblDepositosDisp = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         Empleados = new javax.swing.JScrollPane();
-        listEmleados = new javax.swing.JList<>();
+        listEmpleados = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de contrato");
@@ -353,7 +355,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(jSeparator1);
         jSeparator1.setBounds(30, 383, 810, 10);
 
-        Empleados.setViewportView(listEmleados);
+        Empleados.setViewportView(listEmpleados);
 
         getContentPane().add(Empleados);
         Empleados.setBounds(30, 130, 270, 240);
@@ -396,7 +398,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_txtMinActionPerformed
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        // TODO add your handling code here:
+        
+  
     }//GEN-LAST:event_btnReservarActionPerformed
 
 //    private void seleccionMultiple () {
@@ -432,7 +435,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel labelMensaje2;
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JList listClientes;
-    private javax.swing.JList<String> listEmleados;
+    private javax.swing.JList<String> listEmpleados;
     private javax.swing.JList listaDepositos;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelCaracteristicas;
@@ -461,6 +464,8 @@ class RenderCeldasDepositos extends DefaultListCellRenderer {
         }
         return miCelda;
     }
+    
+  
     
     
 }

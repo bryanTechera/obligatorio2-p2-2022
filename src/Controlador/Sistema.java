@@ -8,6 +8,7 @@ import Dominio.Cliente;
 import Dominio.Deposito;
 import Dominio.Empleado;
 import Dominio.Contrato;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -22,6 +23,8 @@ public class Sistema extends Observable {
     private static HashMap<String, Empleado> empleados;
     private static HashMap<Integer, Deposito> depositos;
     private static HashMap<Integer, Contrato> contratos;
+    
+
 
     public Sistema() {
         this.clientes = new HashMap<String, Cliente>();
