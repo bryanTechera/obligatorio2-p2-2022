@@ -57,7 +57,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         cargarListas();
     }
 
-    private void cargarListas() {
+    public void cargarListas() {
         //LISTA EMPLEADOS
         DefaultListModel modeloDeListaEmpl = new DefaultListModel();
         modeloDeListaEmpl.addAll(this.empleados.values());
@@ -137,8 +137,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         rbRNR = new javax.swing.JRadioButton();
         rbRNo = new javax.swing.JRadioButton();
         rbRSi = new javax.swing.JRadioButton();
-        labelMensaje1 = new javax.swing.JLabel();
-        labelMensaje2 = new javax.swing.JLabel();
+        lblMensaje1 = new javax.swing.JLabel();
+        lblMensaje2 = new javax.swing.JLabel();
         panelAcciones = new javax.swing.JPanel();
         btnLimpiarCapmos = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
@@ -150,9 +150,12 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         labelEmpleados = new javax.swing.JLabel();
         labelClientes = new javax.swing.JLabel();
         lblDepositosDisp = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         Empleados = new javax.swing.JScrollPane();
         listEmpleados = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listDetalles = new javax.swing.JList();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de contrato");
@@ -161,7 +164,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         Clientes.setViewportView(listClientes);
 
         getContentPane().add(Clientes);
-        Clientes.setBounds(300, 130, 270, 240);
+        Clientes.setBounds(170, 130, 180, 240);
 
         panelCaracteristicas.setLayout(null);
 
@@ -220,6 +223,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         pnlEstantes.add(rbESi);
 
         grupoEstantes.add(rbENR);
+        rbENR.setSelected(true);
         rbENR.setText("No relevante");
         pnlEstantes.add(rbENR);
 
@@ -227,6 +231,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         pnlEstantes.setBounds(150, 70, 100, 100);
 
         grupoRefrigeracion.add(rbRNR);
+        rbRNR.setSelected(true);
         rbRNR.setText("No relevante");
         panelCaracteristicas.add(rbRNR);
         rbRNR.setBounds(290, 140, 140, 20);
@@ -244,15 +249,14 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(panelCaracteristicas);
         panelCaracteristicas.setBounds(20, 400, 460, 190);
 
-        labelMensaje1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelMensaje1.setText("Seleccione un empleado, un cliente y las caracteristicas deseadas del deposito.");
-        getContentPane().add(labelMensaje1);
-        labelMensaje1.setBounds(80, 40, 670, 30);
+        lblMensaje1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
+        getContentPane().add(lblMensaje1);
+        lblMensaje1.setBounds(60, 10, 790, 30);
 
-        labelMensaje2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelMensaje2.setText("Luego seleccione los depositos que desea reservar.");
-        getContentPane().add(labelMensaje2);
-        labelMensaje2.setBounds(200, 50, 410, 40);
+        lblMensaje2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        getContentPane().add(lblMensaje2);
+        lblMensaje2.setBounds(220, 40, 410, 40);
 
         panelAcciones.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
 
@@ -295,21 +299,29 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         paneldepositos.setViewportView(listaDepositos);
 
         getContentPane().add(paneldepositos);
-        paneldepositos.setBounds(570, 130, 270, 240);
+        paneldepositos.setBounds(350, 130, 300, 240);
 
-        subtitulos.setLayout(new java.awt.GridLayout(1, 3, 5, 0));
+        subtitulos.setLayout(null);
 
         labelEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelEmpleados.setText("Empleados");
         subtitulos.add(labelEmpleados);
+        labelEmpleados.setBounds(10, 0, 110, 40);
 
         labelClientes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelClientes.setText("Clientes");
         subtitulos.add(labelClientes);
+        labelClientes.setBounds(170, 0, 90, 40);
 
         lblDepositosDisp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDepositosDisp.setText("Depositos disponibles");
         subtitulos.add(lblDepositosDisp);
+        lblDepositosDisp.setBounds(380, 0, 190, 40);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Detalles");
+        subtitulos.add(jLabel1);
+        jLabel1.setBounds(690, 0, 70, 40);
 
         getContentPane().add(subtitulos);
         subtitulos.setBounds(30, 90, 810, 40);
@@ -319,7 +331,12 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         Empleados.setViewportView(listEmpleados);
 
         getContentPane().add(Empleados);
-        Empleados.setBounds(30, 130, 270, 240);
+        Empleados.setBounds(30, 130, 140, 240);
+
+        jScrollPane1.setViewportView(listDetalles);
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(670, 130, 160, 240);
 
         setSize(new java.awt.Dimension(885, 613));
         setLocationRelativeTo(null);
@@ -330,12 +347,16 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         txtMax.setText("");
         rbENR.setSelected(true);
         rbRNR.setSelected(true);
+        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
+        lblMensaje2.setText("");
         
 
     }//GEN-LAST:event_btnLimpiarCapmosActionPerformed
      
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
+        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
+        lblMensaje2.setText("");
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -351,6 +372,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         boolean conRefri = this.rbRSi.isSelected();
 
         cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
+        lblMensaje1.setText("");
+        lblMensaje2.setText("Seleccione los depositos que desea reservar.");
        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -360,7 +383,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
         
-  
+        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
+        lblMensaje2.setText("");
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void rbENoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbENoActionPerformed
@@ -381,20 +405,23 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton btnReservar;
     private javax.swing.ButtonGroup grupoEstantes;
     private javax.swing.ButtonGroup grupoRefrigeracion;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelClientes;
     private javax.swing.JLabel labelEmpleados;
-    private javax.swing.JLabel labelMensaje1;
-    private javax.swing.JLabel labelMensaje2;
     private javax.swing.JLabel lblCaractDep;
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JLabel lblEstantes;
+    private javax.swing.JLabel lblMensaje1;
+    private javax.swing.JLabel lblMensaje2;
     private javax.swing.JLabel lblRefrigeracion;
     private javax.swing.JLabel lblTamaño;
     private javax.swing.JList listClientes;
+    private javax.swing.JList listDetalles;
     private javax.swing.JList<String> listEmpleados;
     private javax.swing.JList listaDepositos;
     private javax.swing.JPanel panelAcciones;

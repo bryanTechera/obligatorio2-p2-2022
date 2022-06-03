@@ -71,7 +71,7 @@ public class Empleado{
     }
     @Override
     public String toString() {
-        return cedula + " " + nombre;
+        return nombre;
     }
 
 }
