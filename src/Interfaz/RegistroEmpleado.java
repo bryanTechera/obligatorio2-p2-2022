@@ -216,6 +216,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             txtCedula.setText("");
             txtDireccion.setText("");
             txtTelefono.setText("");
+            txtAñoIngreso.setText("0");
             txtNombre.setText("");
             this.dispose();
         } catch (Exception ex) {
