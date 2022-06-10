@@ -154,8 +154,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         jSeparator1 = new javax.swing.JSeparator();
         Empleados = new javax.swing.JScrollPane();
         listEmpleados = new javax.swing.JList<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listDetalles = new javax.swing.JList();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de contrato");
@@ -333,10 +333,12 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(Empleados);
         Empleados.setBounds(30, 130, 140, 240);
 
-        jScrollPane1.setViewportView(listDetalles);
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane2.setViewportView(jTextArea1);
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(670, 130, 160, 240);
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(660, 130, 200, 240);
 
         setSize(new java.awt.Dimension(885, 613));
         setLocationRelativeTo(null);
@@ -409,8 +411,9 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelClientes;
     private javax.swing.JLabel labelEmpleados;
     private javax.swing.JLabel lblCaractDep;
@@ -421,7 +424,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JLabel lblRefrigeracion;
     private javax.swing.JLabel lblTamaño;
     private javax.swing.JList listClientes;
-    private javax.swing.JList listDetalles;
     private javax.swing.JList<String> listEmpleados;
     private javax.swing.JList listaDepositos;
     private javax.swing.JPanel panelAcciones;

@@ -24,6 +24,7 @@ public class MenuVentana extends javax.swing.JFrame {
     private RegistroCliente ventanaRegistroCliente;
     private VisitaDepositos ventanaVistaDeposito;
     private Consulta_bajaContrato ventanaBajaContratos;
+    private GraficoDepositos ventanaGrafico;
 
     public MenuVentana() {
         this.setVisible(true);
@@ -34,6 +35,8 @@ public class MenuVentana extends javax.swing.JFrame {
         this.ventanaRegistroCliente = new RegistroCliente(sistema);
         this.ventanaVistaDeposito = new VisitaDepositos(sistema);
         this.ventanaBajaContratos= new Consulta_bajaContrato(sistema);
+        this.ventanaGrafico= new GraficoDepositos(sistema);
+        
         sistema.addObserver(ventanaContrato);
         initComponents();
     }
@@ -206,7 +209,7 @@ public class MenuVentana extends javax.swing.JFrame {
     }//GEN-LAST:event_itmConsultaBajaActionPerformed
 
     private void itmReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmReporteActionPerformed
-        
+        this.ventanaGrafico.setVisible(true);
     }//GEN-LAST:event_itmReporteActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
