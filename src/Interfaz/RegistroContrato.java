@@ -161,6 +161,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         setTitle("Registro de contrato");
         getContentPane().setLayout(null);
 
+        listClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         Clientes.setViewportView(listClientes);
 
         getContentPane().add(Clientes);
@@ -295,7 +296,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(panelAcciones);
         panelAcciones.setBounds(530, 470, 290, 90);
 
-        listaDepositos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         paneldepositos.setViewportView(listaDepositos);
 
         getContentPane().add(paneldepositos);
@@ -328,6 +328,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         getContentPane().add(jSeparator1);
         jSeparator1.setBounds(30, 383, 810, 10);
 
+        listEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         Empleados.setViewportView(listEmpleados);
 
         getContentPane().add(Empleados);
