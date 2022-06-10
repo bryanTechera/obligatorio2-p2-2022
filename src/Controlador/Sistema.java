@@ -7,6 +7,8 @@ package Controlador;
 import Dominio.Cliente;
 import Dominio.Deposito;
 import Dominio.Empleado;
+import Dominio.Contrato;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -20,11 +22,15 @@ public class Sistema extends Observable {
     private static HashMap<String, Cliente> clientes;
     private static HashMap<String, Empleado> empleados;
     private static HashMap<Integer, Deposito> depositos;
+    private static HashMap<Integer, Contrato> contratos;
+    
+
 
     public Sistema() {
         this.clientes = new HashMap<String, Cliente>();
         this.empleados = new HashMap<String, Empleado>();
         this.depositos = new HashMap<Integer, Deposito>();
+        this.contratos = new HashMap<Integer, Contrato>();
     }
 
     public void registrarDeposito(int dimension, boolean estantes, boolean refrigerado) throws Exception {
@@ -45,6 +51,12 @@ public class Sistema extends Observable {
         this.notifyObservadores("cliente");
     }
 
+    public void registrarContrato (Empleado empleado, Cliente cliente, Deposito deposito)throws Exception {
+        Contrato contrato = new Contrato(empleado, cliente, deposito);
+        this.getContratos().put(contrato.getId(), contrato);
+        this.notifyObservadores("contratos");
+    }
+    
     private void notifyObservadores(String cambio) {
         setChanged();
         notifyObservers(cambio);
@@ -61,6 +73,10 @@ public class Sistema extends Observable {
 
     public HashMap<Integer, Deposito> getDepositos() {
         return this.depositos;
+    }
+    
+    public HashMap<Integer, Contrato> getContratos() {
+        return this.contratos;
     }
 
     public void agregarVentanaObservador(Observer ventana){

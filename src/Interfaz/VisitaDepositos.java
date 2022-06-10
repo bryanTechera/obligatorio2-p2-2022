@@ -11,12 +11,11 @@ import Controlador.Sistema;
  * @author Martin
  */
 public class VisitaDepositos extends javax.swing.JFrame {
-
-    /**
-     * Creates new form VisitaDepositos
-     */
+  
+   
     public VisitaDepositos(Sistema sistema) {
         initComponents();
+       
     }
 
     /**
@@ -189,4 +188,12 @@ public class VisitaDepositos extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlDatos;
     // End of variables declaration//GEN-END:variables
+
+    
+
+
+
+
+
 }
+

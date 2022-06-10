@@ -73,6 +73,7 @@ public class Deposito {
         if (dimension < 1) {
             throw new Exception("Dimensiones para el deposio no validad");
         }
+        
     }
 
     private String estadoEstantes() {

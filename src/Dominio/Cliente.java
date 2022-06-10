@@ -61,7 +61,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return cedula+" "+ nombre;
+        return nombre+" C.I.: "+ cedula;
     }
     
     
