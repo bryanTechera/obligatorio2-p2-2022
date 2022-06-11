@@ -60,7 +60,6 @@ public class MenuVentana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         registrosMenu = new javax.swing.JMenu();
         itmRegistroDeposito = new javax.swing.JMenuItem();
@@ -171,17 +170,11 @@ public class MenuVentana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jLabel1)
-                .addContainerGap(505, Short.MAX_VALUE))
+            .addGap(0, 522, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(132, 132, 132)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+            .addGap(0, 352, Short.MAX_VALUE)
         );
 
         pack();
@@ -233,7 +226,6 @@ public class MenuVentana extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmRegistroEmpleado;
     private javax.swing.JMenuItem itmReporte;
     private javax.swing.JMenuItem itmVisitasDepositos;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu registrosMenu;
     private javax.swing.JMenu visitasMenu;
