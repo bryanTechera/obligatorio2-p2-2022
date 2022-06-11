@@ -38,6 +38,7 @@ public class Consulta_bajaContrato extends javax.swing.JFrame {
         btnRegistrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Consulta o baja de contrato");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
