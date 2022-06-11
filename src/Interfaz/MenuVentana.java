@@ -5,8 +5,13 @@
 package Interfaz;
 
 import Controlador.Sistema;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import static javax.swing.UIManager.get;
 
 /**
  *
@@ -14,6 +19,8 @@ import java.util.Observer;
  */
 public class MenuVentana extends javax.swing.JFrame {
 
+    
+    
     /**
      * Creates new form MenuVentana
      */
@@ -25,6 +32,7 @@ public class MenuVentana extends javax.swing.JFrame {
     private VisitaDepositos ventanaVistaDeposito;
     private Consulta_bajaContrato ventanaBajaContratos;
     private GraficoDepositos ventanaGrafico;
+    FondoMenu fondo = new FondoMenu();
 
     public MenuVentana() {
         this.setVisible(true);
@@ -36,9 +44,11 @@ public class MenuVentana extends javax.swing.JFrame {
         this.ventanaVistaDeposito = new VisitaDepositos(sistema);
         this.ventanaBajaContratos= new Consulta_bajaContrato(sistema);
         this.ventanaGrafico= new GraficoDepositos(sistema);
-        
+        this.setContentPane(fondo);
         sistema.addObserver(ventanaContrato);
         initComponents();
+        
+        
     }
 
     /**
@@ -229,5 +239,18 @@ public class MenuVentana extends javax.swing.JFrame {
     private javax.swing.JMenu visitasMenu;
     // End of variables declaration//GEN-END:variables
 
+    class FondoMenu extends JPanel{
+        private Image imagen;
+        
+        @Override
+        public void paint(Graphics g){
+         
+            imagen = new ImageIcon(getClass().getResource("/imagenes/SelfStorage.png")).getImage();
+            g.drawImage(imagen, 0, 160,getWidth(),50 ,this);
+            setOpaque(false);
+            super.paint(g);
+            //getWidth()
+        }
+    }
 
 }

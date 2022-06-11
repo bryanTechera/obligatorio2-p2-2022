@@ -70,11 +70,26 @@ public class Deposito {
     private void Validar(int dimension) throws Exception {
         int retorno;
         Deposito deposito;
+        
         if (dimension < 1) {
             throw new Exception("Dimensiones para el deposio no validad");
         }
         
     }
+    
+//        private void ValidarSeaNumero(int dimension){
+//            int retorno;
+//            Deposito deposito;
+//            try{
+//                
+//                
+//            }
+//            catch(NumberFormatException e){
+//                System.out.println("Debe ingresar un número");
+//            }
+//            
+//        }
+
 
     private String estadoEstantes() {
         String estadoEstantes = "";
