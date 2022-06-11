@@ -54,7 +54,7 @@ public class Cliente {
     private void Validar(String nombre, String cedula, String mail, String telefono) throws Exception {
         int retorno;
         Deposito deposito;
-        if (nombre.length() < 1 && cedula.length() < 1 && mail.length() < 1 && telefono.length() < 1) {
+        if (nombre.length() < 1 || cedula.length() < 1 || mail.length() < 1 || telefono.length() < 1) {
             throw new Exception("Existen errores en los datos ingresados");
         }
     }

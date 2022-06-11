@@ -65,7 +65,7 @@ public class Empleado{
     }
 
     private void Validar(String nombre, String cedula, String direccion, int anioIngreso, String telefono) throws Exception {
-        if (nombre.length() < 1 && cedula.length() < 1 && direccion.length() < 1 && anioIngreso < 1 && telefono.length() < 1) {
+        if (nombre.length() < 1 || cedula.length() < 1 || direccion.length() < 1 || anioIngreso < 1 || telefono.length() < 1) {
             throw new Exception("Existen errores en los datos ingresados");
         }
     }
