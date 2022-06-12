@@ -51,8 +51,8 @@ public class Sistema extends Observable {
         this.notifyObservadores("cliente");
     }
 
-    public void registrarContrato (Empleado empleado, Cliente cliente, Deposito deposito)throws Exception {
-        Contrato contrato = new Contrato(empleado, cliente, deposito);
+    public void registrarContrato (Empleado empleado, Cliente cliente, Deposito deposito, String descripcion)throws Exception {
+        Contrato contrato = new Contrato(empleado, cliente, deposito, descripcion);
         this.getContratos().put(contrato.getId(), contrato);
         this.notifyObservadores("contratos");
     }

@@ -4,16 +4,26 @@
  */
 package Interfaz;
 
+import Controlador.Sistema;
+
 /**
  *
  * @author Martin
  */
 public class SelectorInicial extends javax.swing.JFrame {
 
+    Sistema sistema;
+    private MenuVentana ventanaMenu;
+    private SelectorArchivo selectorArchivo;
+    
     /**
      * Creates new form SelectorInicial
      */
     public SelectorInicial() {
+        this.setVisible(true);
+        this.sistema = new Sistema();
+        this.ventanaMenu = new MenuVentana();
+        this.selectorArchivo = new SelectorArchivo();
         initComponents();
     }
 
@@ -26,11 +36,54 @@ public class SelectorInicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        btnSeleccionarArchivo = new javax.swing.JButton();
+        btnRecuperarDatos = new javax.swing.JButton();
+        btnSistemaVacio = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio de sistema");
         getContentPane().setLayout(null);
 
-        setBounds(0, 0, 636, 424);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Seleccione la opción deseada:");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(150, 80, 340, 50);
+
+        btnSeleccionarArchivo.setText("Seleccionar archivo");
+        btnSeleccionarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarArchivoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSeleccionarArchivo);
+        btnSeleccionarArchivo.setBounds(220, 310, 150, 60);
+
+        btnRecuperarDatos.setText("Recuperar datos");
+        getContentPane().add(btnRecuperarDatos);
+        btnRecuperarDatos.setBounds(220, 170, 150, 60);
+
+        btnSistemaVacio.setText("Sistema vacío");
+        btnSistemaVacio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSistemaVacioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSistemaVacio);
+        btnSistemaVacio.setBounds(220, 240, 150, 60);
+
+        setSize(new java.awt.Dimension(636, 424));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSistemaVacioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSistemaVacioActionPerformed
+        
+        this.ventanaMenu.setVisible(true);
+    }//GEN-LAST:event_btnSistemaVacioActionPerformed
+
+    private void btnSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarArchivoActionPerformed
+        this.selectorArchivo.setVisible(true);
+    }//GEN-LAST:event_btnSeleccionarArchivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -68,5 +121,9 @@ public class SelectorInicial extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRecuperarDatos;
+    private javax.swing.JButton btnSeleccionarArchivo;
+    private javax.swing.JButton btnSistemaVacio;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
