@@ -15,14 +15,16 @@ public class Contrato {
     private Cliente cliente;
     private Deposito deposito;
     private int id;
+    private String descripcion;
 
-    public Contrato(Empleado empleado, Cliente cliente, Deposito deposito) {
+    public Contrato(Empleado empleado, Cliente cliente, Deposito deposito, String descripcion) {
         this.id = ultimoContrato + 1;
         ultimoContrato = this.id;
         this.empleado = empleado;
         this.cliente = cliente;
         this.deposito = deposito;
         this.deposito.setAlquilado(true);
+        this.descripcion = descripcion;
     }
 
     public int getId() {
@@ -56,6 +58,13 @@ public class Contrato {
     public void setDeposito(Deposito uneposito) {
         this.deposito = deposito;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    
+    
 
     @Override
     public String toString(){
