@@ -215,6 +215,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "empleado registrado", "Registro de empleado", JOptionPane.INFORMATION_MESSAGE);
             txtCedula.setText("");
             txtDireccion.setText("");
+            txtAñoIngreso.setText("0");
             txtTelefono.setText("");
             txtAñoIngreso.setText("0");
             txtNombre.setText("");
