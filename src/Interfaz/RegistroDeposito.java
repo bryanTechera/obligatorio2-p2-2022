@@ -1,19 +1,12 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Dominio.Deposito;
-import Controlador.Sistema;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import Dominio.Sistema;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Ana Laura
- */
 public class RegistroDeposito extends javax.swing.JFrame {
 
     private Sistema sistema;
@@ -21,6 +14,7 @@ public class RegistroDeposito extends javax.swing.JFrame {
     public RegistroDeposito(Sistema sistema) {
         this.sistema = sistema;
         initComponents();
+
     }
 
     /**
@@ -38,8 +32,6 @@ public class RegistroDeposito extends javax.swing.JFrame {
         grupoEstantes = new javax.swing.ButtonGroup();
         grupoRefrigerado = new javax.swing.ButtonGroup();
         pnlConfiguraciones = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        lblNumero = new javax.swing.JLabel();
         pnlLables = new javax.swing.JPanel();
         lblTamaño = new javax.swing.JLabel();
         lblEstantes = new javax.swing.JLabel();
@@ -61,13 +53,8 @@ public class RegistroDeposito extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de deposito");
-        getContentPane().setLayout(new java.awt.FlowLayout());
-
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 35, 5));
-
-        lblNumero.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblNumero.setText("Registro nuevo deposito");
-        jPanel3.add(lblNumero);
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         pnlLables.setLayout(new java.awt.GridLayout(3, 1, 0, 25));
 
@@ -119,7 +106,31 @@ public class RegistroDeposito extends javax.swing.JFrame {
         radio_noRefrigerado.setText("No");
         pnlOpciones.add(radio_noRefrigerado);
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
+        javax.swing.GroupLayout pnlConfiguracionesLayout = new javax.swing.GroupLayout(pnlConfiguraciones);
+        pnlConfiguraciones.setLayout(pnlConfiguracionesLayout);
+        pnlConfiguracionesLayout.setHorizontalGroup(
+            pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(pnlLables, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(115, Short.MAX_VALUE))
+        );
+        pnlConfiguracionesLayout.setVerticalGroup(
+            pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlLables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(pnlConfiguraciones);
+        pnlConfiguraciones.setBounds(30, 40, 570, 220);
+
+        jPanel2.setLayout(null);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setMaximumSize(new java.awt.Dimension(150, 50));
@@ -131,6 +142,7 @@ public class RegistroDeposito extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnCancelar);
+        btnCancelar.setBounds(60, 20, 160, 30);
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.setPreferredSize(new java.awt.Dimension(150, 50));
@@ -140,41 +152,12 @@ public class RegistroDeposito extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnRegistrar);
+        btnRegistrar.setBounds(230, 20, 150, 30);
 
-        javax.swing.GroupLayout pnlConfiguracionesLayout = new javax.swing.GroupLayout(pnlConfiguraciones);
-        pnlConfiguraciones.setLayout(pnlConfiguracionesLayout);
-        pnlConfiguracionesLayout.setHorizontalGroup(
-            pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
-                .addGroup(pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
-                            .addGap(130, 130, 130)
-                            .addComponent(pnlLables, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(48, 48, 48)
-                            .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
-                            .addGap(118, 118, 118)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(121, Short.MAX_VALUE))
-        );
-        pnlConfiguracionesLayout.setVerticalGroup(
-            pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlConfiguracionesLayout.createSequentialGroup()
-                .addGap(67, 67, 67)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addGroup(pnlConfiguracionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlLables, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(30, 260, 460, 60);
 
-        getContentPane().add(pnlConfiguraciones);
-
-        setSize(new java.awt.Dimension(572, 460));
+        setSize(new java.awt.Dimension(552, 409));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -183,20 +166,23 @@ public class RegistroDeposito extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-        int dimension = Integer.parseInt(txtTamaño.getText());
-        boolean estantes = radio_estantes.isSelected();
-        boolean refrigerado = radio_refrigerado.isSelected();
+       
         try {
+            int dimension = Integer.parseInt(txtTamaño.getText());
+            boolean estantes = radio_estantes.isSelected();
+            boolean refrigerado = radio_refrigerado.isSelected();
             this.sistema.registrarDeposito(dimension, estantes, refrigerado);
             JOptionPane.showMessageDialog(this, "deposito registrado", "Registro de deposito", JOptionPane.INFORMATION_MESSAGE);
             txtTamaño.setText("0");
             radio_noEstantes.setSelected(true);
             radio_noRefrigerado.setSelected(true);
             this.dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un número.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtTamañoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTamañoActionPerformed
@@ -212,10 +198,8 @@ public class RegistroDeposito extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblEstantes;
     private javax.swing.JLabel lblM2;
-    private javax.swing.JLabel lblNumero;
     private javax.swing.JLabel lblRefrigerado;
     private javax.swing.JLabel lblTamaño;
     private javax.swing.JPanel pnlConfiguraciones;

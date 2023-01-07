@@ -1,20 +1,66 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
+import Dominio.Contrato;
+import Dominio.Sistema;
+import Dominio.Deposito;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.border.Border;
 
-public class ConsultaDeposito extends javax.swing.JFrame {
+public class ConsultaDeposito extends javax.swing.JFrame implements Observer {
 
-    /**
-     * Creates new form ConsultaDeposito
-     */
-    public ConsultaDeposito() {
+    private Sistema sistema;
+    private HashMap<Integer, Deposito> depositos;
+
+    public ConsultaDeposito(Sistema sistema) {
+        this.sistema = sistema;
+        this.depositos = sistema.getDepositos();
+
         initComponents();
+        botonesDepositos();
+
+    
+    }
+
+    class DepositoListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            JButton cual = ((JButton) e.getSource());
+            String[] numDep = cual.getText().split(" ");
+            int idDep = Integer.parseInt(numDep[1]);
+            Deposito dep = depositos.get(idDep);
+            Contrato contrato = null;
+            if (dep.isAlquilado()) {
+                contrato = sistema.getContrato(dep.getId());
+
+            }
+            InformacionDeposito infoDep = new InformacionDeposito(dep, contrato, sistema.getVisitas());
+            infoDep.setVisible(true);
+
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        String opcion = (String) arg;
+        if (opcion.equals("deposito") || opcion.equals("contratos") || opcion.equals("visita")) {
+            this.depositos = sistema.getDepositos();
+        }
+        botonesDepositos();
+        this.panelDepositos.repaint();
+        
+
     }
 
     /**
@@ -27,71 +73,104 @@ public class ConsultaDeposito extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        panelDepositos = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Consultar deposito");
+        setTitle("Consultar depositos");
+        setResizable(false);
         getContentPane().setLayout(null);
 
-        jPanel1.setLayout(new java.awt.GridLayout(0, 5));
-        jScrollPane1.setViewportView(jPanel1);
+        panelDepositos.setLayout(new java.awt.GridLayout(0, 5, 5, 5));
+        jScrollPane1.setViewportView(panelDepositos);
 
         getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(40, 60, 600, 220);
+        jScrollPane1.setBounds(100, 40, 560, 140);
 
-        setSize(new java.awt.Dimension(708, 434));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jButton1.setText("Cerrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(300, 210, 140, 30);
+
+        setSize(new java.awt.Dimension(729, 289));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultaDeposito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultaDeposito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultaDeposito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultaDeposito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConsultaDeposito().setVisible(true);
-            }
-        });
-    }
-
-//    private class DepositoListener implements ActionListener {
-//
-//        public void actionPerformed(ActionEvent e) { // este código se ejecutará al presionar el botón, obtengo cuál botón
-//
-//            JButton cual = ((JButton) e.getSource());
-//            // código a completar según el botón presionado
-//
-//        }
-//    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panelDepositos;
     // End of variables declaration//GEN-END:variables
+
+    private void botonesDepositos() {
+
+        Collection<Deposito> coleccionDeDepositos = this.sistema.getDepositos().values();
+
+        Iterator it = coleccionDeDepositos.iterator();
+        Deposito dep;
+
+        this.panelDepositos.removeAll();
+
+        while (it.hasNext()) {
+
+            dep = (Deposito) it.next();
+            JButton nuevo = new JButton(" ");
+            nuevo.setMargin(new Insets(-5, -5, -5, -5));
+
+            if (dep.isAlquilado()) {
+                nuevo.setBackground(Color.RED);
+                System.out.println("alquilado");
+                nuevo.setForeground(Color.BLACK);
+            } else {
+                nuevo.setBackground(Color.GREEN);
+                nuevo.setForeground(Color.BLACK);
+            }
+
+            nuevo.setText("Número: " + dep.getId());
+            nuevo.setBorder(new BordeRedondo(10));
+            nuevo.setPreferredSize(new Dimension(20, 15));
+            nuevo.addActionListener(new DepositoListener());
+            panelDepositos.add(nuevo);
+
+        }
+
+        this.repaint();
+
+    }
+
+}
+
+class BordeRedondo implements Border {  //metodo para redondear los botones del panel
+
+    private int radio;
+
+    BordeRedondo(int unRadio) {
+        this.radio = unRadio;
+    }
+
+    @Override
+    public void paintBorder(Component cmpnt, Graphics grphcs, int x, int y, int width, int height) {
+        grphcs.drawRoundRect(x, y, width - 1, height - 1, radio, radio);
+    }
+
+    @Override
+    public Insets getBorderInsets(Component cmpnt) {
+        return new Insets(this.radio + 1, this.radio + 1, this.radio + 2, this.radio);
+    }
+
+    @Override
+    public boolean isBorderOpaque() {
+        return true;
+    }
 
 }

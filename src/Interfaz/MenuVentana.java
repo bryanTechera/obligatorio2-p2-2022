@@ -1,54 +1,31 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/Application.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
+import Controlador.PersistenciaSistema;
+import Dominio.Sistema;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.Observable;
-import java.util.Observer;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import static javax.swing.UIManager.get;
 
-/**
- *
- * @author Ana Laura
- */
 public class MenuVentana extends javax.swing.JFrame {
 
-    
-    
     /**
      * Creates new form MenuVentana
      */
     private Sistema sistema;
-    private RegistroContrato ventanaContrato;
-    private RegistroDeposito ventanaRegistroDeposito;
-    private RegistroEmpleado ventanaRegistroEmpleado;
-    private RegistroCliente ventanaRegistroCliente;
-    private VisitaDepositos ventanaVistaDeposito;
-    private Consulta_bajaContrato ventanaBajaContratos;
-    private GraficoDepositos ventanaGrafico;
-    FondoMenu fondo = new FondoMenu();
 
-    public MenuVentana() {
-        this.setVisible(true);
-        this.sistema = new Sistema();
-        this.ventanaContrato = new RegistroContrato(sistema);
-        this.ventanaRegistroDeposito = new RegistroDeposito(sistema);
-        this.ventanaRegistroEmpleado = new RegistroEmpleado(sistema);
-        this.ventanaRegistroCliente = new RegistroCliente(sistema);
-        this.ventanaVistaDeposito = new VisitaDepositos(sistema);
-        this.ventanaBajaContratos= new Consulta_bajaContrato(sistema);
-        this.ventanaGrafico= new GraficoDepositos(sistema);
-        this.setContentPane(fondo);
-        sistema.addObserver(ventanaContrato);
+    public MenuVentana(Sistema unSistema) {
         initComponents();
-        
-        
+
+        this.sistema = unSistema;
+
+        this.setVisible(true);
+
     }
 
     /**
@@ -60,6 +37,7 @@ public class MenuVentana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         registrosMenu = new javax.swing.JMenu();
         itmRegistroDeposito = new javax.swing.JMenuItem();
@@ -76,6 +54,14 @@ public class MenuVentana extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu principal");
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/SelfStorage.png"))); // NOI18N
 
         registrosMenu.setMnemonic('f');
         registrosMenu.setText("Registros");
@@ -146,6 +132,11 @@ public class MenuVentana extends javax.swing.JFrame {
 
         itmConsultaDeposito.setMnemonic('a');
         itmConsultaDeposito.setText("Consulta de deposito");
+        itmConsultaDeposito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itmConsultaDepositoActionPerformed(evt);
+            }
+        });
         consultasMenu.add(itmConsultaDeposito);
 
         menuBar.add(consultasMenu);
@@ -170,11 +161,17 @@ public class MenuVentana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(162, 162, 162)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         pack();
@@ -182,38 +179,62 @@ public class MenuVentana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itmRegistroContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroContratoActionPerformed
-
-        this.ventanaContrato.setVisible(true);
+        RegistroContrato ventanaContrato = new RegistroContrato(this.sistema);
+        sistema.addObserver(ventanaContrato);
+        ventanaContrato.setVisible(true);
     }//GEN-LAST:event_itmRegistroContratoActionPerformed
 
     private void itmRegistroDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroDepositoActionPerformed
 
-        this.ventanaRegistroDeposito.setVisible(true);
+        RegistroDeposito regDeposito = new RegistroDeposito(this.sistema);
+        regDeposito.setVisible(true);
+
     }//GEN-LAST:event_itmRegistroDepositoActionPerformed
 
     private void itmRegistroEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroEmpleadoActionPerformed
-
-        this.ventanaRegistroEmpleado.setVisible(true);
+        RegistroEmpleado regEmpleado = new RegistroEmpleado(this.sistema);
+        regEmpleado.setVisible(true);
     }//GEN-LAST:event_itmRegistroEmpleadoActionPerformed
 
     private void itmRegistroClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroClienteActionPerformed
-
-        this.ventanaRegistroCliente.setVisible(true);
+        RegistroCliente regCliente = new RegistroCliente(this.sistema);
+        regCliente.setVisible(true);
     }//GEN-LAST:event_itmRegistroClienteActionPerformed
 
     private void itmVisitasDepositosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmVisitasDepositosActionPerformed
-
-        this.ventanaVistaDeposito.setVisible(true);
+        VisitaDepositos ventanaVistaDeposito = new VisitaDepositos(this.sistema);
+        sistema.addObserver(ventanaVistaDeposito);
+        ventanaVistaDeposito.setVisible(true);
     }//GEN-LAST:event_itmVisitasDepositosActionPerformed
 
     private void itmConsultaBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaBajaActionPerformed
-
-        this.ventanaBajaContratos.setVisible(true);
+        Consulta_bajaContrato ventanaBajaContratos = new Consulta_bajaContrato(this.sistema);
+        sistema.addObserver(ventanaBajaContratos);
+        ventanaBajaContratos.setVisible(true);
     }//GEN-LAST:event_itmConsultaBajaActionPerformed
 
     private void itmReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmReporteActionPerformed
-        this.ventanaGrafico.setVisible(true);
+        GraficoDepositos ventanaGrafico = new GraficoDepositos(this.sistema);
+        sistema.addObserver(ventanaGrafico);
+        ventanaGrafico.setVisible(true);
     }//GEN-LAST:event_itmReporteActionPerformed
+
+    private void itmConsultaDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaDepositoActionPerformed
+        ConsultaDeposito consultaDeposito = new ConsultaDeposito(this.sistema);
+        sistema.addObserver(consultaDeposito);
+        consultaDeposito.setVisible(true);
+    }//GEN-LAST:event_itmConsultaDepositoActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       
+        try {
+            
+            
+            PersistenciaSistema.persistirSistema(this.sistema, "Sistema.ser");
+        } catch (IOException ex) {
+            System.out.println("Error al serializar sistema" + ex);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu consultasMenu;
@@ -226,23 +247,12 @@ public class MenuVentana extends javax.swing.JFrame {
     private javax.swing.JMenuItem itmRegistroEmpleado;
     private javax.swing.JMenuItem itmReporte;
     private javax.swing.JMenuItem itmVisitasDepositos;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu registrosMenu;
     private javax.swing.JMenu visitasMenu;
     // End of variables declaration//GEN-END:variables
 
-    class FondoMenu extends JPanel{
-        private Image imagen;
-        
-        @Override
-        public void paint(Graphics g){
-         
-            imagen = new ImageIcon(getClass().getResource("/imagenes/SelfStorage.png")).getImage();
-            g.drawImage(imagen, 0, 160,getWidth(),50 ,this);
-            setOpaque(false);
-            super.paint(g);
-            //getWidth()
-        }
-    }
+  
 
 }

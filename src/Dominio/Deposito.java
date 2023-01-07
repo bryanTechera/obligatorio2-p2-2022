@@ -1,14 +1,12 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Dominio;
 
-/**
- *
- * @author Martin
- */
-public class Deposito {
+import java.io.Serializable;
+
+public class Deposito implements Serializable {
 
     private static int ultimoDeposito = 0;
     private int tamaño;
@@ -16,6 +14,39 @@ public class Deposito {
     private boolean refrigerado;
     private boolean alquilado;
     private int id;
+
+    public Deposito(int id, int tamaño, boolean estante, boolean refrigerado) throws Exception {
+        this.Validar(tamaño);
+        this.id = id;
+        this.tamaño = tamaño;
+        this.estante = estante;
+        this.refrigerado = refrigerado;
+        this.alquilado = false;
+        if (id < ultimoDeposito) {
+            throw new Exception("El numero de los depositos debe esta especificados de forma ascendente en el archivo de entrada");
+        } else {
+            ultimoDeposito = id;
+        }
+    }
+
+    public Deposito(int tamaño, boolean estante, boolean refrigerado) throws Exception {
+        this.Validar(tamaño);
+        this.id = ultimoDeposito + 1;
+        ultimoDeposito = this.id;
+        this.tamaño = tamaño;
+        this.estante = estante;
+        this.refrigerado = refrigerado;
+        this.alquilado = false;
+    }
+
+    private void Validar(int dimension) throws Exception {
+        int retorno;
+        Deposito deposito;
+
+        if (dimension < 1) {
+            throw new Exception("Dimensiones para el deposio no validas");
+        }
+    }
 
     public int getId() {
         return id;
@@ -56,40 +87,6 @@ public class Deposito {
     private void setRefrigerado(boolean unRefrigerado) {
         this.refrigerado = unRefrigerado;
     }
-
-    public Deposito(int tamaño, boolean estante, boolean refrigerado) throws Exception {
-        this.Validar(tamaño);
-        this.id = ultimoDeposito + 1;
-        ultimoDeposito = this.id;
-        this.tamaño = tamaño;
-        this.estante = estante;
-        this.refrigerado = refrigerado;
-        this.alquilado = false;
-    }
-
-    private void Validar(int dimension) throws Exception {
-        int retorno;
-        Deposito deposito;
-        
-        if (dimension < 1) {
-            throw new Exception("Dimensiones para el deposio no validad");
-        }
-        
-    }
-    
-//        private void ValidarSeaNumero(int dimension){
-//            int retorno;
-//            Deposito deposito;
-//            try{
-//                
-//                
-//            }
-//            catch(NumberFormatException e){
-//                System.out.println("Debe ingresar un número");
-//            }
-//            
-//        }
-
 
     private String estadoEstantes() {
         String estadoEstantes = "";

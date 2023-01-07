@@ -1,18 +1,12 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import Dominio.Sistema;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Ana Laura
- */
 public class RegistroEmpleado extends javax.swing.JFrame {
 
     private Sistema sistema;
@@ -48,12 +42,14 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de empleado");
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblNombre.setText("Nombre:");
 
         lblCedula.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblCedula.setText("Cedula:");
+        lblCedula.setText("Cédula:");
 
         lblDireccion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblDireccion.setText("Dirección:");
@@ -141,10 +137,13 @@ public class RegistroEmpleado extends javax.swing.JFrame {
                 .addGroup(pnlDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTelefono)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
-        pnlBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
+        getContentPane().add(pnlDatos);
+        pnlDatos.setBounds(6, 0, 475, 270);
+
+        pnlBotones.setLayout(null);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setMaximumSize(new java.awt.Dimension(150, 50));
@@ -156,6 +155,7 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             }
         });
         pnlBotones.add(btnCancelar);
+        btnCancelar.setBounds(50, 10, 150, 30);
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.setPreferredSize(new java.awt.Dimension(150, 50));
@@ -165,28 +165,12 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             }
         });
         pnlBotones.add(btnRegistrar);
+        btnRegistrar.setBounds(230, 10, 150, 30);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlBotones);
+        pnlBotones.setBounds(0, 280, 450, 60);
 
-        setSize(new java.awt.Dimension(503, 399));
+        setSize(new java.awt.Dimension(485, 373));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -204,11 +188,11 @@ public class RegistroEmpleado extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
-//    private String telefono;
+
         String nombre = txtNombre.getText();
         String cedula = txtCedula.getText();
         String direccion = txtDireccion.getText();
-        int anioIngreso = Integer.parseInt(txtAñoIngreso.getText());
+        String anioIngreso = txtAñoIngreso.getText();
         String telefono = txtTelefono.getText();
         try {
             this.sistema.registrarEmpleado(nombre, cedula, direccion, anioIngreso, telefono);
@@ -217,13 +201,13 @@ public class RegistroEmpleado extends javax.swing.JFrame {
             txtDireccion.setText("");
             txtAñoIngreso.setText("0");
             txtTelefono.setText("");
-            txtAñoIngreso.setText("0");
             txtNombre.setText("");
             this.dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             System.out.println(ex);
         }
+
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed

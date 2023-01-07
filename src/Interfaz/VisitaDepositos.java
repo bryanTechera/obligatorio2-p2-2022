@@ -1,21 +1,77 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
+import Dominio.Sistema;
+import Dominio.Cliente;
+import Dominio.Contrato;
+import Dominio.Deposito;
+import Dominio.Empleado;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author Martin
- */
-public class VisitaDepositos extends javax.swing.JFrame {
-  
-   
+public class VisitaDepositos extends javax.swing.JFrame implements Observer {
+
+    private HashMap<String, Empleado> empleados;
+    private HashMap<String, Cliente> clientes;
+    private HashMap<Integer, Deposito> depositos;
+
+    private Sistema sistema;
+
     public VisitaDepositos(Sistema sistema) {
+
+        this.sistema = sistema;
+        this.empleados = sistema.getEmpleados();
+        this.clientes = sistema.getClientes();
+        this.depositos = sistema.getDepositos();
+
         initComponents();
-       
+        update(null, "empleado");
+        update(null, "cliente");
+        update(null, "contratos");
+
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        String opcion = (String) arg;
+        if (opcion.equals("empleado")) {
+            DefaultListModel modelEmp = sistema.getModeloEmpleado();
+            this.listEmpleados.setModel(modelEmp);
+        } else if (opcion.equals("cliente")) {
+            DefaultListModel modelCliente = sistema.getModeloCliente();
+            this.listClientes.setModel(modelCliente);
+        } else if (opcion.equals("contratos")) {
+            DefaultListModel modelContrato = sistema.getModeloContrato();
+            this.listContratos.setModel(modelContrato);
+        }
+    }
+
+    private void cargarContratos(Cliente cliente) {
+        Collection<Contrato> coleccionDeContratos = this.sistema.getContratos().values();
+        Iterator it = coleccionDeContratos.iterator();
+        DefaultListModel modeloDeListaContrato = new DefaultListModel();
+
+        while (it.hasNext()) {
+
+            Contrato miContrato = (Contrato) it.next();
+
+            if (miContrato.getCliente().getCedula().equals(cliente.getCedula())) {
+                modeloDeListaContrato.addElement(miContrato);
+            }
+
+        }
+
+        listContratos.setModel(modeloDeListaContrato);
+
     }
 
     /**
@@ -28,84 +84,103 @@ public class VisitaDepositos extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlDatos = new javax.swing.JPanel();
-        listEmpleados = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList();
+        Empleados = new javax.swing.JScrollPane();
+        listEmpleados = new javax.swing.JList();
         lblMes = new javax.swing.JLabel();
         lblEmpleados = new javax.swing.JLabel();
         lblDia = new javax.swing.JLabel();
         comboDia = new javax.swing.JComboBox();
         comboMes = new javax.swing.JComboBox<>();
-        listContratos = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList();
+        list = new javax.swing.JScrollPane();
+        listContratos = new javax.swing.JList();
         lblContratos = new javax.swing.JLabel();
-        listClientes = new javax.swing.JScrollPane();
-        jList5 = new javax.swing.JList();
+        lis = new javax.swing.JScrollPane();
+        listClientes = new javax.swing.JList();
         lblClientes = new javax.swing.JLabel();
         pnlBotones = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Visita depositos");
+        setResizable(false);
+        getContentPane().setLayout(null);
 
         pnlDatos.setLayout(null);
 
-        jList3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        listEmpleados.setViewportView(jList3);
+        listEmpleados.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        listEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        Empleados.setViewportView(listEmpleados);
 
-        pnlDatos.add(listEmpleados);
-        listEmpleados.setBounds(300, 80, 110, 190);
+        pnlDatos.add(Empleados);
+        Empleados.setBounds(230, 70, 210, 120);
 
         lblMes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblMes.setText("Mes");
         pnlDatos.add(lblMes);
-        lblMes.setBounds(560, 130, 29, 22);
+        lblMes.setBounds(570, 90, 29, 22);
 
         lblEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblEmpleados.setText("Empleados");
         pnlDatos.add(lblEmpleados);
-        lblEmpleados.setBounds(320, 50, 90, 22);
+        lblEmpleados.setBounds(300, 30, 90, 22);
 
         lblDia.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblDia.setText("Día");
         pnlDatos.add(lblDia);
-        lblDia.setBounds(470, 130, 50, 22);
+        lblDia.setBounds(480, 90, 50, 22);
 
-        comboDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        comboDia.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         comboDia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboDiaActionPerformed(evt);
             }
         });
         pnlDatos.add(comboDia);
-        comboDia.setBounds(450, 170, 72, 22);
+        comboDia.setBounds(460, 130, 72, 22);
 
-        comboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
+        comboMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }));
         pnlDatos.add(comboMes);
-        comboMes.setBounds(540, 170, 72, 22);
+        comboMes.setBounds(550, 130, 72, 22);
 
-        jList4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        listContratos.setViewportView(jList4);
+        listContratos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        listContratos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        list.setViewportView(listContratos);
 
-        pnlDatos.add(listContratos);
-        listContratos.setBounds(170, 80, 110, 190);
+        pnlDatos.add(list);
+        list.setBounds(10, 250, 630, 90);
 
         lblContratos.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblContratos.setText("Contratos");
         pnlDatos.add(lblContratos);
-        lblContratos.setBounds(190, 50, 80, 22);
+        lblContratos.setBounds(290, 220, 80, 22);
 
-        jList5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        listClientes.setViewportView(jList5);
+        listClientes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        listClientes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listClientes.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                listClientesFocusGained(evt);
+            }
+        });
+        listClientes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listClientesValueChanged(evt);
+            }
+        });
+        lis.setViewportView(listClientes);
 
-        pnlDatos.add(listClientes);
-        listClientes.setBounds(40, 80, 110, 190);
+        pnlDatos.add(lis);
+        lis.setBounds(10, 70, 210, 120);
 
         lblClientes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblClientes.setText("Clientes");
         pnlDatos.add(lblClientes);
-        lblClientes.setBounds(70, 50, 60, 22);
+        lblClientes.setBounds(80, 30, 60, 22);
 
-        pnlBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
+        getContentPane().add(pnlDatos);
+        pnlDatos.setBounds(0, 10, 648, 360);
+
+        pnlBotones.setLayout(null);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setMaximumSize(new java.awt.Dimension(150, 50));
@@ -117,6 +192,7 @@ public class VisitaDepositos extends javax.swing.JFrame {
             }
         });
         pnlBotones.add(btnCancelar);
+        btnCancelar.setBounds(13, 25, 140, 30);
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.setPreferredSize(new java.awt.Dimension(150, 50));
@@ -126,31 +202,12 @@ public class VisitaDepositos extends javax.swing.JFrame {
             }
         });
         pnlBotones.add(btnRegistrar);
+        btnRegistrar.setBounds(188, 25, 140, 30);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(295, Short.MAX_VALUE)
-                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlBotones);
+        pnlBotones.setBounds(140, 370, 350, 60);
 
-        setSize(new java.awt.Dimension(676, 465));
+        setSize(new java.awt.Dimension(676, 482));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -163,37 +220,57 @@ public class VisitaDepositos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        Empleado empleado = (Empleado) this.listEmpleados.getSelectedValue();
+        Cliente cliente = (Cliente) this.listClientes.getSelectedValue();
+        Contrato contrato = (Contrato) this.listContratos.getSelectedValue();
+        int dia = comboDia.getSelectedIndex();
+        int mes = comboMes.getSelectedIndex();
+        try {
+            this.sistema.registrarVisita(cliente, empleado, contrato, dia, mes);
+            JOptionPane.showMessageDialog(this, "Visita registrada", "Registro de visita", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            this.comboDia.setSelectedIndex(0);
+            this.comboMes.setSelectedIndex(0);
+            this.listClientes.setSelectedIndex(0);
+            this.listEmpleados.setSelectedIndex(0);
 
-       
-       
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void listClientesFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_listClientesFocusGained
+
+    }//GEN-LAST:event_listClientesFocusGained
+
+    private void listClientesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listClientesValueChanged
+        Cliente clientSelec = (Cliente) listClientes.getSelectedValue();
+        if (clientSelec != null) {
+            cargarContratos((Cliente) listClientes.getSelectedValue());
+        }
+    }//GEN-LAST:event_listClientesValueChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane Empleados;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JComboBox comboDia;
     private javax.swing.JComboBox<String> comboMes;
-    private javax.swing.JList jList3;
-    private javax.swing.JList jList4;
-    private javax.swing.JList jList5;
     private javax.swing.JLabel lblClientes;
     private javax.swing.JLabel lblContratos;
     private javax.swing.JLabel lblDia;
     private javax.swing.JLabel lblEmpleados;
     private javax.swing.JLabel lblMes;
-    private javax.swing.JScrollPane listClientes;
-    private javax.swing.JScrollPane listContratos;
-    private javax.swing.JScrollPane listEmpleados;
+    private javax.swing.JScrollPane lis;
+    private javax.swing.JScrollPane list;
+    private javax.swing.JList listClientes;
+    private javax.swing.JList listContratos;
+    private javax.swing.JList listEmpleados;
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlDatos;
     // End of variables declaration//GEN-END:variables
 
-    
-
-
-
-
-
 }
-

@@ -1,22 +1,98 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
+import Controlador.ArchivoGrabacion;
+import Controlador.OrdenVisit;
+import Dominio.Sistema;
+import Dominio.Cliente;
+import Dominio.Contrato;
+import Dominio.Empleado;
+import Dominio.Visita;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Martin
- */
-public class Consulta_bajaContrato extends javax.swing.JFrame {
+
+public class Consulta_bajaContrato extends javax.swing.JFrame implements Observer {
+
+    private HashMap<String, Empleado> empleados;
+    private HashMap<String, Cliente> clientes;
+    private ArrayList<Visita> visitas;
+    private HashMap<Integer, Contrato> contratos;
+
+    Object[] celdas = new Object[3];
+
+    private Sistema sistema;
 
     /**
      * Creates new form Consulta_bajaContrato
+     *
+     * @param sistema
      */
     public Consulta_bajaContrato(Sistema sistema) {
+        this.sistema = sistema;
+        this.empleados = sistema.getEmpleados();
+        this.clientes = sistema.getClientes();
+        this.visitas = sistema.getVisitas();
+        this.contratos = sistema.getContratos();
         initComponents();
+        update(null, "contratos");
+        this.repaint();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        String opcion = (String) arg;
+
+        if (opcion.equals("contratos")) {
+            this.contratos = this.sistema.getContratos();
+            DefaultListModel modelContrato = new DefaultListModel();
+            Collection<Contrato> NumContratos = this.contratos.values();
+            Iterator it = NumContratos.iterator();
+            while (it.hasNext()) {
+                Contrato cont = (Contrato) it.next();
+                modelContrato.addElement("Número: " + cont.getId());
+            }
+            this.listContratos.setModel(modelContrato);
+
+        }
+    }
+
+    private void cargarTabla(int idContrato) {
+        DefaultTableModel tabla = new DefaultTableModel();
+        tabla = (DefaultTableModel) tablaVisitas.getModel();
+        Visita vis;
+
+        Collections.sort(this.visitas, new OrdenVisit());
+
+        for (int i = 0; i < visitas.size(); i++) {
+            vis = visitas.get(i);
+            if (vis.getContrato().getId() == (idContrato)) {
+                celdas[0] = vis.getDia();
+                celdas[1] = vis.getMes();
+                celdas[2] = vis.getEmpleado().getNombre();
+                tabla.addRow(celdas);
+
+            }
+        }
+
+        this.tablaVisitas.setModel(tabla);
+
     }
 
     /**
@@ -29,24 +105,33 @@ public class Consulta_bajaContrato extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaVisitas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        listContratos = new javax.swing.JList();
         jPanel2 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
-        btnRegistrar = new javax.swing.JButton();
+        btnBaja = new javax.swing.JButton();
+        lblNumContrato = new javax.swing.JLabel();
+        txtNumContrato = new javax.swing.JTextField();
+        lblNombreCliente = new javax.swing.JLabel();
+        txtNombreCliente = new javax.swing.JTextField();
+        lblIngresadoPor = new javax.swing.JLabel();
+        txtIngresadoPor = new javax.swing.JTextField();
+        lblDepositoNum = new javax.swing.JLabel();
+        txtDepositoNum = new javax.swing.JTextField();
+        lblDescripcion = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtDescripcion = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta o baja de contrato");
+        setResizable(false);
+        getContentPane().setLayout(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaVisitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Día", "Mes", "Empleado"
@@ -55,19 +140,43 @@ public class Consulta_bajaContrato extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jScrollPane1.setViewportView(jTable1);
+        tablaVisitas.setGridColor(new java.awt.Color(204, 204, 204));
+        tablaVisitas.setRowSelectionAllowed(false);
+        tablaVisitas.setShowGrid(true);
+        jScrollPane1.setViewportView(tablaVisitas);
 
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(210, 280, 350, 138);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Nº contrato");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(30, 130, 120, 50);
 
-        jScrollPane2.setViewportView(jList1);
+        listContratos.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listContratos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listContratosValueChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(listContratos);
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 25, 5));
+        getContentPane().add(jScrollPane2);
+        jScrollPane2.setBounds(30, 180, 100, 240);
+
+        jPanel2.setLayout(null);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.setMaximumSize(new java.awt.Dimension(150, 50));
@@ -79,55 +188,91 @@ public class Consulta_bajaContrato extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnCancelar);
+        btnCancelar.setBounds(20, 10, 140, 30);
 
-        btnRegistrar.setText("Consultar");
-        btnRegistrar.setPreferredSize(new java.awt.Dimension(150, 50));
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+        btnBaja.setText("Dar de baja");
+        btnBaja.setPreferredSize(new java.awt.Dimension(150, 50));
+        btnBaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
+                btnBajaActionPerformed(evt);
             }
         });
-        jPanel2.add(btnRegistrar);
+        jPanel2.add(btnBaja);
+        btnBaja.setBounds(180, 10, 130, 30);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 172, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(103, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17))))
-        );
+        getContentPane().add(jPanel2);
+        jPanel2.setBounds(220, 430, 330, 60);
 
-        setSize(new java.awt.Dimension(616, 435));
+        lblNumContrato.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblNumContrato.setText("Contato N°:");
+        getContentPane().add(lblNumContrato);
+        lblNumContrato.setBounds(210, 20, 100, 30);
+
+        txtNumContrato.setEditable(false);
+        txtNumContrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumContratoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtNumContrato);
+        txtNumContrato.setBounds(320, 20, 90, 22);
+
+        lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblNombreCliente.setText("A nombre de:");
+        getContentPane().add(lblNombreCliente);
+        lblNombreCliente.setBounds(210, 60, 100, 30);
+
+        txtNombreCliente.setEditable(false);
+        txtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreClienteActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtNombreCliente);
+        txtNombreCliente.setBounds(320, 60, 90, 22);
+
+        lblIngresadoPor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblIngresadoPor.setText("Ingresado por:");
+        getContentPane().add(lblIngresadoPor);
+        lblIngresadoPor.setBounds(210, 100, 100, 30);
+
+        txtIngresadoPor.setEditable(false);
+        txtIngresadoPor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIngresadoPorActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtIngresadoPor);
+        txtIngresadoPor.setBounds(320, 100, 90, 22);
+
+        lblDepositoNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblDepositoNum.setText("Deposito N°:");
+        getContentPane().add(lblDepositoNum);
+        lblDepositoNum.setBounds(210, 140, 100, 30);
+
+        txtDepositoNum.setEditable(false);
+        txtDepositoNum.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDepositoNumActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtDepositoNum);
+        txtDepositoNum.setBounds(320, 140, 90, 22);
+
+        lblDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblDescripcion.setText("Descripción:");
+        getContentPane().add(lblDescripcion);
+        lblDescripcion.setBounds(210, 180, 100, 30);
+
+        txtDescripcion.setEditable(false);
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane3.setViewportView(txtDescripcion);
+
+        getContentPane().add(jScrollPane3);
+        jScrollPane3.setBounds(320, 180, 234, 86);
+
+        setSize(new java.awt.Dimension(621, 545));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -135,18 +280,114 @@ public class Consulta_bajaContrato extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-       
-    }//GEN-LAST:event_btnRegistrarActionPerformed
+    private void btnBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaActionPerformed
+
+        String valor = (String) listContratos.getSelectedValue();
+
+        if (valor != null) {
+            int opcion = JOptionPane.showConfirmDialog(this, "Esta seguro que desea dar de baja este contrato?", "Confirmacion", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                String contratoMensaje = (String) this.listContratos.getSelectedValue();
+                String[] arr = contratoMensaje.split(" ");
+                Contrato contrato = this.contratos.get(Integer.parseInt(arr[1]));
+                String nomCliente = contrato.getCliente().getNombre();
+                int numContrato = contrato.getId();
+                int numDeposito = contrato.getDeposito().getId();
+                try {
+                    ArchivoGrabacion salida = this.sistema.grabar(nomCliente + " " + numContrato + ".txt");
+                    ArrayList<Visita> paraBorrar = new ArrayList<Visita>();
+                    for (int e = 0; e < this.visitas.size(); e++) {
+                        Visita visita = this.visitas.get(e);
+                        System.out.println("Graba");
+                        if (visita.getContrato().getId() == numContrato) {
+                            salida.grabarLinea(visita.toString());
+                            paraBorrar.add(visita);
+                        }
+                    }
+                    for (int i = 0; i < paraBorrar.size(); i++) {
+                        this.sistema.eliminarVisita(paraBorrar.get(i).getContrato().getId());
+                    }
+                    this.sistema.eliminarContrato(numContrato);
+                    this.sistema.eliminarDeposito(numDeposito);
+                    salida.cerrar();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Consulta_bajaContrato.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Consulta_bajaContrato.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                txtNumContrato.setText("");
+                txtNombreCliente.setText("");
+                txtIngresadoPor.setText("");
+                txtDepositoNum.setText("");
+                txtDescripcion.setText("");
+                this.dispose();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un contrato", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_btnBajaActionPerformed
+
+    private void listContratosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listContratosValueChanged
+
+        DefaultTableModel mod = (DefaultTableModel) tablaVisitas.getModel();
+        int aux = tablaVisitas.getModel().getRowCount();
+        for (int i = aux - 1; i >= 0; i--) {
+            mod.removeRow(i);
+        }
+        String valor = (String) listContratos.getSelectedValue();
+
+        if (valor != null) {
+            String[] val = valor.split(" ");
+            cargarTabla(Integer.parseInt(val[1]));
+            Contrato contrato = this.contratos.get(Integer.parseInt(val[1]));
+
+            txtNumContrato.setText(contrato.getId() + "");
+            txtNombreCliente.setText(contrato.getCliente().getNombre() + "");
+            txtIngresadoPor.setText(contrato.getEmpleado().getNombre() + "");
+            txtDepositoNum.setText(contrato.getDeposito().getId() + "");
+            txtDescripcion.setText(contrato.getDescripcion() + "");
+
+        }
+
+    }//GEN-LAST:event_listContratosValueChanged
+
+    private void txtNumContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumContratoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumContratoActionPerformed
+
+    private void txtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreClienteActionPerformed
+
+    private void txtIngresadoPorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIngresadoPorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIngresadoPorActionPerformed
+
+    private void txtDepositoNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDepositoNumActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDepositoNumActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBaja;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList jList1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblDepositoNum;
+    private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblIngresadoPor;
+    private javax.swing.JLabel lblNombreCliente;
+    private javax.swing.JLabel lblNumContrato;
+    private javax.swing.JList listContratos;
+    private javax.swing.JTable tablaVisitas;
+    private javax.swing.JTextField txtDepositoNum;
+    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextField txtIngresadoPor;
+    private javax.swing.JTextField txtNombreCliente;
+    private javax.swing.JTextField txtNumContrato;
     // End of variables declaration//GEN-END:variables
 }

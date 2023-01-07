@@ -1,29 +1,25 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
+import Controlador.ArchivoLectura;
+import Controlador.PersistenciaSistema;
+import Dominio.Deposito;
+import Dominio.Sistema;
+import java.io.IOException;
+import java.util.HashMap;
+import javax.swing.JOptionPane;
 
-/**
- *
- * @author Martin
- */
 public class SelectorInicial extends javax.swing.JFrame {
 
     Sistema sistema;
     private MenuVentana ventanaMenu;
-    private SelectorArchivo selectorArchivo;
-    
-    /**
-     * Creates new form SelectorInicial
-     */
+
     public SelectorInicial() {
         this.setVisible(true);
         this.sistema = new Sistema();
-        this.ventanaMenu = new MenuVentana();
-        this.selectorArchivo = new SelectorArchivo();
         initComponents();
     }
 
@@ -40,15 +36,17 @@ public class SelectorInicial extends javax.swing.JFrame {
         btnSeleccionarArchivo = new javax.swing.JButton();
         btnRecuperarDatos = new javax.swing.JButton();
         btnSistemaVacio = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de sistema");
+        setResizable(false);
         getContentPane().setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Seleccione la opción deseada:");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(150, 80, 340, 50);
+        jLabel1.setBounds(80, 50, 340, 50);
 
         btnSeleccionarArchivo.setText("Seleccionar archivo");
         btnSeleccionarArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -57,11 +55,16 @@ public class SelectorInicial extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnSeleccionarArchivo);
-        btnSeleccionarArchivo.setBounds(220, 310, 150, 60);
+        btnSeleccionarArchivo.setBounds(160, 280, 150, 60);
 
         btnRecuperarDatos.setText("Recuperar datos");
+        btnRecuperarDatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRecuperarDatosActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnRecuperarDatos);
-        btnRecuperarDatos.setBounds(220, 170, 150, 60);
+        btnRecuperarDatos.setBounds(160, 140, 150, 60);
 
         btnSistemaVacio.setText("Sistema vacío");
         btnSistemaVacio.addActionListener(new java.awt.event.ActionListener() {
@@ -70,60 +73,86 @@ public class SelectorInicial extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnSistemaVacio);
-        btnSistemaVacio.setBounds(220, 240, 150, 60);
+        btnSistemaVacio.setBounds(160, 210, 150, 60);
 
-        setSize(new java.awt.Dimension(636, 424));
+        jButton1.setText("Cancelar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(190, 370, 90, 22);
+
+        setSize(new java.awt.Dimension(507, 442));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSistemaVacioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSistemaVacioActionPerformed
-        
-        this.ventanaMenu.setVisible(true);
+
+        MenuVentana menu = new MenuVentana(new Sistema());
+        this.setVisible(false);
+
     }//GEN-LAST:event_btnSistemaVacioActionPerformed
 
     private void btnSeleccionarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarArchivoActionPerformed
-        this.selectorArchivo.setVisible(true);
+
+        String archivoEntradaDepositos = SelectorArchivoV2.mostrarSelectorArchivo();
+        if (!archivoEntradaDepositos.equals("")) {
+            ArchivoLectura entradaDepositos = new ArchivoLectura(archivoEntradaDepositos);
+            HashMap<Integer, Deposito> depositos = new HashMap<Integer, Deposito>();
+            String linea;
+            String[] lineaArr;
+            Deposito deposito;
+            Sistema sistemaConDepositos = new Sistema();
+            try {
+                while (entradaDepositos.hayMasLineas()) {
+                    //cargo los datos del archivo
+                    linea = entradaDepositos.linea();
+                    lineaArr = linea.split("#");
+                    int id = Integer.parseInt(lineaArr[0]);
+                    int tamaño = Integer.parseInt(lineaArr[1]);
+                    boolean estante = lineaArr[2].equalsIgnoreCase("S") ? true : false;
+                    boolean refrigerado = lineaArr[3].equalsIgnoreCase("S") ? true : false;
+                    deposito = new Deposito(id, tamaño, estante, refrigerado);
+                    depositos.put(id, deposito);
+
+                }
+                sistemaConDepositos.setDepositos(depositos);
+                new MenuVentana(sistemaConDepositos);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            this.setVisible(false);
+
+        }
+
+
     }//GEN-LAST:event_btnSeleccionarArchivoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SelectorInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SelectorInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SelectorInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SelectorInicial.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SelectorInicial().setVisible(true);
-            }
-        });
-    }
+    private void btnRecuperarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecuperarDatosActionPerformed
+        try {
+            Sistema sistemaRecuperado = (Sistema) PersistenciaSistema.recuperarSistema("Sistema.ser");
+            new MenuVentana(sistemaRecuperado);
+            this.setVisible(false);
+        } catch (IOException ex) {
+            System.out.println("Error al recuperar sistema");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Error al recuperar sistema");
+        }
+
+    }//GEN-LAST:event_btnRecuperarDatosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRecuperarDatos;
     private javax.swing.JButton btnSeleccionarArchivo;
     private javax.swing.JButton btnSistemaVacio;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

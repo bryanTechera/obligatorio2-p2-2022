@@ -1,10 +1,12 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Dominio;
 
-public class Cliente {
+import java.io.Serializable;
+
+public class Cliente implements Serializable {
 
     private String nombre;
     private String cedula;
@@ -27,19 +29,19 @@ public class Cliente {
         return telefono;
     }
 
-    public void setNombre(String unNombre) {
+    private void setNombre(String unNombre) {
         this.nombre = unNombre;
     }
 
-    public void setCedula(String unaCedula) {
+    private void setCedula(String unaCedula) {
         this.cedula = unaCedula;
     }
 
-    public void setMail(String unMail) {
+    private void setMail(String unMail) {
         this.mail = unMail;
     }
 
-    public void setTelefono(String unTelefono) {
+    private void setTelefono(String unTelefono) {
         this.telefono = unTelefono;
     }
 
@@ -56,14 +58,26 @@ public class Cliente {
         Deposito deposito;
         if (nombre.length() < 1 || cedula.length() < 1 || mail.length() < 1 || telefono.length() < 1) {
             throw new Exception("Existen errores en los datos ingresados");
+        } else {
+            int numCedula=-1;
+            int numTel=-1;
+            try {
+                numCedula = Integer.parseInt(cedula);
+            } catch (NumberFormatException e) {
+                String error = "";
+                if(numCedula==-1){
+                    error = "El campo cédula debe ser numérico";
+                }else if(numTel==-1){
+                    error = "El campo teléfono debe ser numérico";
+                }
+                throw new Exception(error);
+            }
         }
     }
 
     @Override
     public String toString() {
-        return nombre+" C.I.: "+ cedula;
+        return nombre + " C.I.: " + cedula;
     }
-    
-    
 
 }

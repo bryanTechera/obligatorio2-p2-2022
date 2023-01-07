@@ -1,14 +1,13 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Dominio;
 
-/**
- *
- * @author Bryan
- */
-public class Contrato {
+import java.io.Serializable;
+
+
+public class Contrato implements Serializable{
 
     private static int ultimoContrato = 0;
     private Empleado empleado;
@@ -55,7 +54,7 @@ public class Contrato {
         this.cliente = unCliente;
     }
 
-    public void setDeposito(Deposito uneposito) {
+    private void setDeposito(Deposito uneposito) {
         this.deposito = deposito;
     }
 
@@ -68,7 +67,7 @@ public class Contrato {
 
     @Override
     public String toString(){
-    return "Contrato nº: " + this.id + " Corresopndiente al deposito: " + deposito.getId() + " Registrador por: " + empleado.getNombre() 
+    return "Contrato nº: " + this.id + " Deposito: " + deposito.getId() + " Registrador por: " + empleado.getNombre() 
             + ". Cliente: " + cliente.getNombre() + " - C.I.: " + cliente.getCedula() ;
     }
     

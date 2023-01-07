@@ -1,34 +1,26 @@
-/*
+/*Bryan Techera #271868  Martín Lores #285463
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
 
-import Controlador.Sistema;
+import Dominio.Sistema;
 import Dominio.Cliente;
 import Dominio.Deposito;
 import Dominio.Empleado;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import static javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION;
 
 public class RegistroContrato extends javax.swing.JFrame implements Observer {
 
@@ -43,33 +35,25 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         this.clientes = sistema.getClientes();
         this.depositos = sistema.getDepositos();
         initComponents();
-        cargarListas();
+        update(null, "empleado");
+        update(null, "cliente");
+        
+
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println(arg);
+
         String opcion = (String) arg;
         if (opcion.equals("empleado")) {
-            empleados = sistema.getEmpleados();
-        } else if (opcion.equals("deposito")) {
-            depositos = sistema.getDepositos();
+            DefaultListModel modelEmp = sistema.getModeloEmpleado();
+            this.listEmpleados.setModel(modelEmp);
         } else if (opcion.equals("cliente")) {
-            clientes = sistema.getClientes();
+            DefaultListModel modelCliente = sistema.getModeloCliente();
+            this.listClientes.setModel(modelCliente);
+        } else if (opcion.equals("deposito")) {
+            cargarResultadosBusqueda();
         }
-        cargarListas();
-    }
-
-    public void cargarListas() {
-        //LISTA EMPLEADOS
-        DefaultListModel modeloDeListaEmpl = new DefaultListModel();
-        modeloDeListaEmpl.addAll(this.empleados.values());
-        this.listEmpleados.setModel(modeloDeListaEmpl);
-        this.Empleados.repaint();
-        //LISTA CLIENTES
-        DefaultListModel modeloDeListaClie = new DefaultListModel();
-        modeloDeListaClie.addAll(this.clientes.values());
-        this.listClientes.setModel(modeloDeListaClie);
     }
 
     private void cargarDepositos(int tamMinimo, int tamMaximo, boolean noRelevanteEstan, boolean noRelevanteRefri, boolean conEstan, boolean conRefri) {
@@ -78,7 +62,8 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         Iterator it = coleccionDeDepositos.iterator();
         //LISTA DEPOSITOS
         DefaultListModel modeloDeListaDepo = new DefaultListModel();
-        this.listaDepositos.setCellRenderer(new RenderCeldasDepositos());
+        this.listDepositos.setCellRenderer(new RenderCeldasDepositos());
+        this.listDepositos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         while (it.hasNext()) {
             boolean loAgrego = true;
             Deposito miDep = (Deposito) it.next();
@@ -104,7 +89,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
             }
 
         }
-        this.listaDepositos.setModel(modeloDeListaDepo);
+        this.listDepositos.setModel(modeloDeListaDepo);
 
     }
 
@@ -121,7 +106,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         grupoRefrigeracion = new javax.swing.ButtonGroup();
         Clientes = new javax.swing.JScrollPane();
         listClientes = new javax.swing.JList();
-        panelCaracteristicas = new javax.swing.JPanel();
+        txtADetalles = new javax.swing.JPanel();
         lblCaractDep = new javax.swing.JLabel();
         lblTamaño = new javax.swing.JLabel();
         lblEstantes = new javax.swing.JLabel();
@@ -139,24 +124,22 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         rbRNo = new javax.swing.JRadioButton();
         rbRSi = new javax.swing.JRadioButton();
         lblMensaje1 = new javax.swing.JLabel();
-        lblMensaje2 = new javax.swing.JLabel();
         panelAcciones = new javax.swing.JPanel();
-        btnLimpiarCapmos = new javax.swing.JButton();
-        btnBuscar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnReservar = new javax.swing.JButton();
         paneldepositos = new javax.swing.JScrollPane();
-        listaDepositos = new javax.swing.JList();
-        subtitulos = new javax.swing.JPanel();
-        labelEmpleados = new javax.swing.JLabel();
-        labelClientes = new javax.swing.JLabel();
-        lblDepositosDisp = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        listDepositos = new javax.swing.JList();
         jSeparator1 = new javax.swing.JSeparator();
         Empleados = new javax.swing.JScrollPane();
-        listEmpleados = new javax.swing.JList<>();
+        listEmpleados = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtArea = new javax.swing.JTextArea();
+        btnBuscar = new javax.swing.JButton();
+        lblDepositosDisp = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        labelClientes = new javax.swing.JLabel();
+        labelEmpleados = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de contrato");
@@ -166,38 +149,49 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         Clientes.setViewportView(listClientes);
 
         getContentPane().add(Clientes);
-        Clientes.setBounds(170, 130, 180, 240);
+        Clientes.setBounds(460, 110, 310, 120);
 
-        panelCaracteristicas.setLayout(null);
+        txtADetalles.setLayout(null);
 
         lblCaractDep.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblCaractDep.setText("Caracteristicas del deposito");
-        panelCaracteristicas.add(lblCaractDep);
+        txtADetalles.add(lblCaractDep);
         lblCaractDep.setBounds(107, 0, 250, 25);
 
         lblTamaño.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblTamaño.setText("Tamaño");
-        panelCaracteristicas.add(lblTamaño);
+        txtADetalles.add(lblTamaño);
         lblTamaño.setBounds(30, 40, 57, 22);
 
         lblEstantes.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblEstantes.setText("Estantes");
-        panelCaracteristicas.add(lblEstantes);
+        txtADetalles.add(lblEstantes);
         lblEstantes.setBounds(150, 40, 57, 22);
 
         lblRefrigeracion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lblRefrigeracion.setText("Refrigeración");
-        panelCaracteristicas.add(lblRefrigeracion);
+        txtADetalles.add(lblRefrigeracion);
         lblRefrigeracion.setBounds(290, 40, 113, 22);
 
         jPanel1.setLayout(new java.awt.GridLayout(2, 2, -30, 20));
 
         jLabel6.setText("Mínimo");
+        jLabel6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jLabel6KeyTyped(evt);
+            }
+        });
         jPanel1.add(jLabel6);
 
+        txtMin.setText("0");
         txtMin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMinActionPerformed(evt);
+            }
+        });
+        txtMin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMinKeyPressed(evt);
             }
         });
         jPanel1.add(txtMin);
@@ -205,6 +199,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         jLabel7.setText("Máximo");
         jPanel1.add(jLabel7);
 
+        txtMax.setText("0");
         txtMax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaxActionPerformed(evt);
@@ -212,7 +207,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         });
         jPanel1.add(txtMax);
 
-        panelCaracteristicas.add(jPanel1);
+        txtADetalles.add(jPanel1);
         jPanel1.setBounds(10, 80, 120, 80);
 
         pnlEstantes.setLayout(new java.awt.GridLayout(3, 0));
@@ -245,7 +240,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
         });
         pnlEstantes.add(rbENR);
 
-        panelCaracteristicas.add(pnlEstantes);
+        txtADetalles.add(pnlEstantes);
         pnlEstantes.setBounds(150, 70, 100, 100);
 
         grupoRefrigeracion.add(rbRNR);
@@ -256,7 +251,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                 rbRNRActionPerformed(evt);
             }
         });
-        panelCaracteristicas.add(rbRNR);
+        txtADetalles.add(rbRNR);
         rbRNR.setBounds(290, 140, 140, 20);
 
         grupoRefrigeracion.add(rbRNo);
@@ -266,7 +261,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                 rbRNoActionPerformed(evt);
             }
         });
-        panelCaracteristicas.add(rbRNo);
+        txtADetalles.add(rbRNo);
         rbRNo.setBounds(290, 110, 60, 20);
 
         grupoRefrigeracion.add(rbRSi);
@@ -276,38 +271,18 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
                 rbRSiActionPerformed(evt);
             }
         });
-        panelCaracteristicas.add(rbRSi);
+        txtADetalles.add(rbRSi);
         rbRSi.setBounds(290, 80, 40, 20);
 
-        getContentPane().add(panelCaracteristicas);
-        panelCaracteristicas.setBounds(20, 400, 460, 190);
+        getContentPane().add(txtADetalles);
+        txtADetalles.setBounds(30, 510, 460, 190);
 
         lblMensaje1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
         getContentPane().add(lblMensaje1);
         lblMensaje1.setBounds(60, 10, 790, 30);
 
-        lblMensaje2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        getContentPane().add(lblMensaje2);
-        lblMensaje2.setBounds(220, 40, 410, 40);
-
-        panelAcciones.setLayout(new java.awt.GridLayout(2, 2, 10, 10));
-
-        btnLimpiarCapmos.setText("Limpiar campos");
-        btnLimpiarCapmos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarCapmosActionPerformed(evt);
-            }
-        });
-        panelAcciones.add(btnLimpiarCapmos);
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-        panelAcciones.add(btnBuscar);
+        panelAcciones.setLayout(null);
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -316,6 +291,7 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
             }
         });
         panelAcciones.add(btnCancelar);
+        btnCancelar.setBounds(0, 30, 140, 40);
 
         btnReservar.setText("Reservar");
         btnReservar.addActionListener(new java.awt.event.ActionListener() {
@@ -324,172 +300,142 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
             }
         });
         panelAcciones.add(btnReservar);
+        btnReservar.setBounds(150, 30, 140, 40);
 
         getContentPane().add(panelAcciones);
-        panelAcciones.setBounds(530, 470, 290, 90);
+        panelAcciones.setBounds(530, 580, 290, 90);
 
-        paneldepositos.setViewportView(listaDepositos);
+        paneldepositos.setViewportView(listDepositos);
 
         getContentPane().add(paneldepositos);
-        paneldepositos.setBounds(350, 130, 300, 240);
-
-        subtitulos.setLayout(null);
-
-        labelEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelEmpleados.setText("Empleados");
-        subtitulos.add(labelEmpleados);
-        labelEmpleados.setBounds(10, 0, 110, 40);
-
-        labelClientes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelClientes.setText("Clientes");
-        subtitulos.add(labelClientes);
-        labelClientes.setBounds(170, 0, 90, 40);
-
-        lblDepositosDisp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblDepositosDisp.setText("Depositos disponibles");
-        subtitulos.add(lblDepositosDisp);
-        lblDepositosDisp.setBounds(380, 0, 190, 40);
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Detalles");
-        subtitulos.add(jLabel1);
-        jLabel1.setBounds(690, 0, 70, 40);
-
-        getContentPane().add(subtitulos);
-        subtitulos.setBounds(30, 90, 810, 40);
+        paneldepositos.setBounds(30, 330, 360, 110);
         getContentPane().add(jSeparator1);
-        jSeparator1.setBounds(30, 383, 810, 10);
+        jSeparator1.setBounds(10, 480, 810, 10);
 
         listEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listEmpleados.setToolTipText("");
         Empleados.setViewportView(listEmpleados);
 
         getContentPane().add(Empleados);
-        Empleados.setBounds(30, 130, 140, 240);
+        Empleados.setBounds(30, 110, 350, 120);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        txtArea.setColumns(20);
+        txtArea.setRows(5);
+        jScrollPane2.setViewportView(txtArea);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(660, 130, 200, 240);
+        jScrollPane2.setBounds(460, 330, 310, 110);
 
-        setSize(new java.awt.Dimension(885, 613));
+        btnBuscar.setText("Buscar depositos");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBuscar);
+        btnBuscar.setBounds(520, 510, 140, 30);
+
+        lblDepositosDisp.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblDepositosDisp.setText("Depositos disponibles");
+        getContentPane().add(lblDepositosDisp);
+        lblDepositosDisp.setBounds(110, 270, 190, 40);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Detalles");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(580, 270, 70, 40);
+
+        labelClientes.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelClientes.setText("Clientes");
+        getContentPane().add(labelClientes);
+        labelClientes.setBounds(570, 60, 90, 40);
+
+        labelEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelEmpleados.setText("Empleados");
+        getContentPane().add(labelEmpleados);
+        labelEmpleados.setBounds(160, 60, 110, 40);
+        getContentPane().add(jSeparator2);
+        jSeparator2.setBounds(10, 250, 810, 10);
+
+        setSize(new java.awt.Dimension(866, 723));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLimpiarCapmosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarCapmosActionPerformed
-        txtMin.setText("");
-        txtMax.setText("");
-        rbENR.setSelected(true);
-        rbRNR.setSelected(true);
-        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
-        lblMensaje2.setText("");
-
-
-    }//GEN-LAST:event_btnLimpiarCapmosActionPerformed
-
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
-        lblMensaje2.setText("");
+
+
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
-        int tamMinimo = Integer.parseInt(this.txtMin.getText());
-        int tamMax = Integer.parseInt(this.txtMax.getText());
-        boolean noRelevanteEstan = this.rbENR.isSelected();
-        boolean noRelevanteRefri = this.rbRNR.isSelected();
-
-        boolean conEstan = this.rbESi.isSelected();
-        boolean conRefri = this.rbRSi.isSelected();
-
-        cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
-        lblMensaje1.setText("");
-        lblMensaje2.setText("Seleccione los depositos que desea reservar.");
-
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMinActionPerformed
-        txtMin.addKeyListener(dimensiones);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_txtMinActionPerformed
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
 
-        lblMensaje1.setText("Seleccione un empleado, el cliente y las caracteristicas deseadas de los depositos que busca.");
-        lblMensaje2.setText("");
+        Empleado empleado = (Empleado) this.listEmpleados.getSelectedValue();
+        Cliente cliente = (Cliente) this.listClientes.getSelectedValue();
+        List<Deposito> listDepos = this.listDepositos.getSelectedValuesList();
+        String desc = txtArea.getText();
+        try {
+            this.sistema.registrarContrato(empleado, cliente, listDepos, desc);
+
+            JOptionPane.showMessageDialog(this, "Contrato creado", "Registro de contrato", JOptionPane.INFORMATION_MESSAGE);
+            this.listDepositos.setModel(new DefaultListModel());
+
+            txtMin.setText("1");
+            txtMax.setText("9999");
+
+            this.dispose();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void rbENoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbENoActionPerformed
-        rbENo.addActionListener(datosDep);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_rbENoActionPerformed
 
     private void rbESiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbESiActionPerformed
-        rbESi.addActionListener(datosDep);
+        cargarResultadosBusqueda();
+
     }//GEN-LAST:event_rbESiActionPerformed
 
     private void rbENRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbENRActionPerformed
-        rbENR.addActionListener(datosDep);
+
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_rbENRActionPerformed
 
     private void rbRSiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbRSiActionPerformed
-        rbRSi.addActionListener(datosDep);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_rbRSiActionPerformed
 
     private void rbRNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbRNoActionPerformed
-        rbRNo.addActionListener(datosDep);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_rbRNoActionPerformed
 
     private void rbRNRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbRNRActionPerformed
-        rbRNR.addActionListener(datosDep);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_rbRNRActionPerformed
 
     private void txtMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaxActionPerformed
-        txtMax.addKeyListener(dimensiones);
+        cargarResultadosBusqueda();
     }//GEN-LAST:event_txtMaxActionPerformed
 
-    ActionListener datosDep = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent ae) {
+    private void txtMinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMinKeyPressed
 
-            int tamMinimo = Integer.parseInt(txtMin.getText());
-            int tamMax = Integer.parseInt(txtMax.getText());
-            boolean noRelevanteEstan = rbENR.isSelected();
-            boolean noRelevanteRefri = rbRNR.isSelected();
+    }//GEN-LAST:event_txtMinKeyPressed
 
-            boolean conEstan = rbESi.isSelected();
-            boolean conRefri = rbRSi.isSelected();
-            cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
+    private void jLabel6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel6KeyTyped
 
-        }
-    };
-
-    KeyListener dimensiones = new KeyListener() {
-        @Override
-        public void keyTyped(KeyEvent ke) {
-            int tamMinimo = Integer.parseInt(txtMin.getText());
-            int tamMax = Integer.parseInt(txtMax.getText());
-            boolean noRelevanteEstan = rbENR.isSelected();
-            boolean noRelevanteRefri = rbRNR.isSelected();
-
-            boolean conEstan = rbESi.isSelected();
-            boolean conRefri = rbRSi.isSelected();
-            cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
-            
-        }
-
-        @Override
-        public void keyPressed(KeyEvent ke) {
-        }
-
-        @Override
-        public void keyReleased(KeyEvent ke) {
-            
-
-        }
-    };
-
- 
+    }//GEN-LAST:event_jLabel6KeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -497,7 +443,6 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JScrollPane Empleados;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnLimpiarCapmos;
     private javax.swing.JButton btnReservar;
     private javax.swing.ButtonGroup grupoEstantes;
     private javax.swing.ButtonGroup grupoRefrigeracion;
@@ -507,21 +452,19 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelClientes;
     private javax.swing.JLabel labelEmpleados;
     private javax.swing.JLabel lblCaractDep;
     private javax.swing.JLabel lblDepositosDisp;
     private javax.swing.JLabel lblEstantes;
     private javax.swing.JLabel lblMensaje1;
-    private javax.swing.JLabel lblMensaje2;
     private javax.swing.JLabel lblRefrigeracion;
     private javax.swing.JLabel lblTamaño;
     private javax.swing.JList listClientes;
-    private javax.swing.JList<String> listEmpleados;
-    private javax.swing.JList listaDepositos;
+    private javax.swing.JList listDepositos;
+    private javax.swing.JList listEmpleados;
     private javax.swing.JPanel panelAcciones;
-    private javax.swing.JPanel panelCaracteristicas;
     private javax.swing.JScrollPane paneldepositos;
     private javax.swing.JPanel pnlEstantes;
     private javax.swing.JRadioButton rbENR;
@@ -530,19 +473,45 @@ public class RegistroContrato extends javax.swing.JFrame implements Observer {
     private javax.swing.JRadioButton rbRNR;
     private javax.swing.JRadioButton rbRNo;
     private javax.swing.JRadioButton rbRSi;
-    private javax.swing.JPanel subtitulos;
+    private javax.swing.JPanel txtADetalles;
+    private javax.swing.JTextArea txtArea;
     private javax.swing.JTextField txtMax;
     private javax.swing.JTextField txtMin;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarResultadosBusqueda() {
+        try {
+            if (this.txtMin.getText().startsWith("0") || this.txtMax.getText().startsWith("0")) {
+                throw new NumberFormatException();
+            }
+            int tamMinimo = Integer.parseInt(this.txtMin.getText());
+            int tamMax = Integer.parseInt(this.txtMax.getText());
+
+            boolean noRelevanteEstan = this.rbENR.isSelected();
+            boolean noRelevanteRefri = this.rbRNR.isSelected();
+
+            boolean conEstan = this.rbESi.isSelected();
+            boolean conRefri = this.rbRSi.isSelected();
+
+            cargarDepositos(tamMinimo, tamMax, noRelevanteEstan, noRelevanteRefri, conEstan, conRefri);
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Introduzca un tamaño valido", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
 }
 
 class RenderCeldasDepositos extends DefaultListCellRenderer {
 
-    @Override
+    @Override           //metodo para darle color a los depositos según sus caracteristicas
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component miCelda = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
         Deposito dep = (Deposito) value;
+
         if (dep.esEstante() && dep.esRefrigerado()) {
             miCelda.setBackground(Color.GREEN);
         } else if (dep.esEstante() && !dep.esRefrigerado()) {
@@ -551,6 +520,9 @@ class RenderCeldasDepositos extends DefaultListCellRenderer {
             miCelda.setBackground(Color.YELLOW);
         } else if (!dep.esEstante() && !dep.esRefrigerado()) {
             miCelda.setBackground(Color.CYAN);
+        }
+        if (isSelected) {
+            miCelda.setBackground(Color.LIGHT_GRAY);
         }
         return miCelda;
     }
